@@ -33,7 +33,7 @@ class Encuentros extends CI_Model{
         $query=$this->db
             ->select('*')
             ->from('encuentros')
-            ->where('("'.$fecha.'" < fecha')
+            ->where('"'.$fecha.'" < fecha')
             ->get();
         return $query->result_array();
     }
@@ -42,7 +42,7 @@ class Encuentros extends CI_Model{
         $fecha=date('Y-m-d');
         $query=$this->db
             ->select('*')
-            ->where('("'.$fecha.'" = fecha')
+            ->where('"'.$fecha.'" = fecha')
             ->get();
         return $query->result_array();
     }
@@ -52,7 +52,7 @@ class Encuentros extends CI_Model{
         $query=$this->db
             ->select('*')
             ->from('encuentros')
-            ->where('("'.$fecha.'" > fecha')
+            ->where('"'.$fecha.'" > fecha')
             ->get();
         return $query->result_array();
 

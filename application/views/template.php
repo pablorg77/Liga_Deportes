@@ -32,19 +32,28 @@
     <div class="fl_left">
       <ul class="nospace">
       <li><a href="<?=site_url('Principal');?>">Página principal</a></li>
-        <li><a href="<?=site_url('Plays');?>">Jugados</a></li>
-        <li><a href="#">Por jugar</a></li>
-        <li><a href="#">Actuales</a></li>
+        <li><a href="<?=site_url('Plays/getEncuentrosRecientes');?>">Jugados</a></li>
+        <li><a href="<?=site_url('Plays/getEncuentrosProximos');?>">Por jugar</a></li>
+        <li><a href="<?=site_url('Plays/getEncuentrosActuales');?>">Actuales</a></li>
       </ul>
     </div>
+    <?php if (! $ci->Usuario->isLogged()){?>
     <div class="fl_right">
-      <form class="clear" method="post" action="#">
+      <form class="clear" method="post" action="<?=site_url('Login/login')?>">
         <li> | <a href="<?= site_url('Principal/register');?>">¿No está aún registrado? </a></li>
           <input type="text" name="usuario" id="usuario" placeholder="Usuario"/>
-          <input type="password" name="password" id="password" placeholder="Contraseña"/>
+          <?= form_error('usuario');?>
+          <input type="password" name="pass" id="pass" placeholder="Contraseña"/>
+          <?= form_error('pass');?>
           <button class="fa fa-envelope-o" type="submit" value="submit"></button>
       </form>
     </div>
+    <?php }else{?>
+        <div class="fl_right">
+        <li> <a href="<?=site_url('Login/accOptions')?>"> Opciones </a> </li>
+        <li> <a href="<?=site_url('Login/logOut')?>"> Cerrar sesión </a> </li>
+        </div>
+    <?php }?>
   </div>
 </div>
 <div class="wrapper row1">
@@ -81,8 +90,12 @@
             </li>
           </ul>
         </li>
-        <li><a href="#">Administrar ligas</a></li>
-        <li><a href="#">Solicitudes</a></li>
+        <?php if ($ci->Usuario->isGestor()):?>
+          <?php if ($ci->Usuario->isAdmin()):?>
+            <li><a href="#">Solicitudes</a></li>
+          <?php endif;?>
+          <li><a href="#">Administrar ligas</a></li>
+        <?php endif;?>
       </ul>
     </nav>
   </header>

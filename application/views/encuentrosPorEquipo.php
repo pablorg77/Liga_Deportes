@@ -1,4 +1,9 @@
 
+<?php if($equipo != null):?>
+<div style="margin-top: 10%; margin-left:5%;">
+  <h2> Encuentros de <strong><?= $equipo->nombre?></strong></h2>
+</div>
+<?php endif;?>
 <table class="table table-hover table-dark" style="margin: auto; width: 90%; text-align:center; color:black; margin-top: 30px">
   <thead>
     <tr>

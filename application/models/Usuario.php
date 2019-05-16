@@ -6,8 +6,8 @@ class Usuario extends CI_Model{
 
         $newPass=password_hash($data['pass'], PASSWORD_DEFAULT);
         
-        $this->db->query('INSERT INTO usuarios (usuario,pass,nombre,apellidos) 
-        VALUES ("'.$data["user"].'","'.$newPass.'","'.$data["nombre"].'","'.$data["apellidos"].'")');
+        $this->db->query('INSERT INTO usuarios (usuario, pass, nombre, apellidos, tipo, correo) 
+        VALUES ("'.$data["user"].'","'.$newPass.'","'.$data["nombre"].'","'.$data["apellidos"].'", 3,"'.$data["email"].'")');
     }
 
     function changeTypeToManager($id){
@@ -55,6 +55,26 @@ class Usuario extends CI_Model{
 
     }
 
+    function isAdmin(){
+        if($this->session->has_userdata('user')){
+            if($this->session->userdata('user')->tipo == 1){
+                return true;
+            }
+        }
+        else 
+            return false;
+    }
+
+    function isGestor(){
+        if($this->session->has_userdata('user')){
+            if($this->session->userdata('user')->tipo == 2){
+                return true;
+            }
+        }
+        else 
+            return false;
+    }
+
     function getDataFromLoggedUser(){
 
         if($this->isLogged())
@@ -91,7 +111,7 @@ class Usuario extends CI_Model{
     function logOut(){
 
         $this->session->set_userdata('isIn',false);
-        $this->session->unset_userdata('usuario');
+        $this->session->unset_userdata('user');
 
     }
 
