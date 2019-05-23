@@ -10,6 +10,14 @@ class Usuario extends CI_Model{
         VALUES ("'.$data["user"].'","'.$newPass.'","'.$data["nombre"].'","'.$data["apellidos"].'", 3,"'.$data["email"].'")');
     }
 
+    function changeTypeToAdmin($id){
+
+        $this->db
+        ->set('tipo', 1)
+        ->where('idusuarios',$id)
+        ->update('usuarios');
+    }
+
     function changeTypeToManager($id){
 
         $this->db

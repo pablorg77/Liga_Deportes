@@ -18,6 +18,14 @@ class Deportes extends CI_Model{
         return $query->result_array();
     }
 
+    function getEncuentros(){
+        $query=$this->db
+            ->select('*')
+            ->from('encuentros')
+            ->get();
+        return $query->result_array();
+    }
+
     function getDeportesByCategoria($id){
         $query=$this->db
             ->select('*')
@@ -45,4 +53,27 @@ class Deportes extends CI_Model{
         return $query->result_array();
 
     }
+
+    function getEncuentrosByDeporteId($id){
+
+        $query=$this->db
+            ->select('*')
+            ->from('encuentros')
+            ->where('deportes_iddeporte', $id)
+            ->get();
+        return $query->result_array();
+
+    }
+
+    function getEncuentrosByLigaId($id){
+        
+        $query=$this->db
+            ->select('*')
+            ->from('encuentros')
+            ->where('liga_idliga', $id)
+            ->get();
+        return $query->result_array();
+
+    }
+
 }

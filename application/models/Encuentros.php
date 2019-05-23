@@ -28,34 +28,13 @@ class Encuentros extends CI_Model{
         return $query->result_array();
     }
 
-    function getEncuentrosRecientes(){
-        $fecha=date('Y-m-d');
+    function getEncuentrosPorLiga($idliga){
         $query=$this->db
             ->select('*')
             ->from('encuentros')
-            ->where('"'.$fecha.'" < fecha')
+            ->where('liga_idliga', $idliga)
             ->get();
         return $query->result_array();
-    }
-
-    function getEncuentrosActuales(){
-        $fecha=date('Y-m-d');
-        $query=$this->db
-            ->select('*')
-            ->where('"'.$fecha.'" = fecha')
-            ->get();
-        return $query->result_array();
-    }
-
-    function getEncuentrosProximos(){
-        $fecha=date('Y-m-d');
-        $query=$this->db
-            ->select('*')
-            ->from('encuentros')
-            ->where('"'.$fecha.'" > fecha')
-            ->get();
-        return $query->result_array();
-
     }
 
 }

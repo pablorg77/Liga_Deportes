@@ -11,7 +11,11 @@
   </thead>
   <tbody>
     <?php foreach($equipos as $equipo): ?>
+      <?php if($this->Usuario->isAdmin()){ ?>
         <tr onclick="window.location = '<?= site_url('Plays/getEncuentrosPorEquipo/'.$equipo['nombre']);?>'">
+      <?php }else{ ?>
+        <tr>
+      <?php } ?>
         <td><?= $equipo['nombre']?></td>
         <td><?= $equipo['descripcion']?></td>
         <td><?= $equipo['capitan']?></td>

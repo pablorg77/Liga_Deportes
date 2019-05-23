@@ -3,58 +3,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Plays extends CI_Controller {
 
-    public function plays()
+    public function index()
 	{
-
-        $this->load->model('Encuentros');
         $encuentros = $this->Encuentros->getAllEncuentros();
-
     }
 
     public function getEncuentroPorDeporteId($id){
 
-        $this->load->model('Encuentros');
         $encuentros = $this->Encuentros->getEncuentrosPorDeporteId($id);
-
     }
 
     public function getEncuentrosPorEquipo($nombre){
 
-        $this->load->model('Encuentros');
         $encuentros = $this->Encuentros->getEncuentrosPorEquipo($nombre);
 
         $this->load->view('template', 
 			['body'=>$this->load->view('encuentrosPorEquipo',['encuentros'=>$encuentros, 'equipo' => $nombre], true)]);
     }
 
-    public function getEncuentrosRecientes(){
+    public function getEncuentrosPorLiga($idliga){
 
-        $this->load->model('Encuentros');
-        $encuentros = $this->Encuentros->getEncuentrosRecientes();
-
-        $this->load->view('template', 
-			['body'=>$this->load->view('encuentrosPorEquipo',['encuentros'=>$encuentros], true)]);
-
-    }
-
-    public function getEncuentrosActuales(){
-
-        $this->load->model('Encuentros');
-        $encuentros = $this->Encuentros->getEncuentrosActuales();
+        $encuentros = $this->Encuentros->getEncuentrosPorLiga($idliga);
+        $liga = $this->Leagues->getLigaFromId($idliga);
 
         $this->load->view('template', 
-			['body'=>$this->load->view('encuentrosPorEquipo',['encuentros'=>$encuentros], true)]);
-
+			['body'=>$this->load->view('encuentrosPorEquipo',['encuentros'=>$encuentros, 'liga' => $liga], true)]);
     }
 
-    public function getEncuentrosProximos(){
-
-        $this->load->model('Encuentros');
-        $encuentros = $this->Encuentros->getEncuentrosProximos();
-
-        $this->load->view('template', 
-			['body'=>$this->load->view('encuentrosPorEquipo',['encuentros'=>$encuentros], true)]);
-
-    }
 
 }

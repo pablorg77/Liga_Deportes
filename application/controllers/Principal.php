@@ -6,7 +6,7 @@ class Principal extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->model('Deportes');
+
 		$categorias = $this->Deportes->getCategorias();
 		$deportes = $this->Deportes->getDeportes();
 
