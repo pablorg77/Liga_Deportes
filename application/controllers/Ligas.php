@@ -101,7 +101,12 @@ class Ligas extends CI_Controller {
         //Mismo que usuario pero puede crear, modificar y borrar ligas
         else if($this->Usuario->isGestor()){
 
-            if($this->input->post('selectDeporte')!=null){
+            $ligas = $this->Leagues->getLigasGestor();
+            
+            $this->load->view('template', 
+                ['body'=>$this->load->view('ligasByLogged',['ligas' => $ligas], true)]);
+
+            /*if($this->input->post('selectDeporte')!=null){
                 $ligas = $this->Leagues->getLigasGestor($this->input->post('selectDeporte'));
 
                 if($this->input->post('selectLiga')!=null){
@@ -114,14 +119,17 @@ class Ligas extends CI_Controller {
 
             $this->load->view('template', 
                 ['body'=>$this->load->view('ligasUsuario',[
-                    'deportes' => $deportes,'ligas' => $ligas, 'encuentros' => $encuentros], true)]);
+                    'deportes' => $deportes,'ligas' => $ligas, 'encuentros' => $encuentros], true)]);*/
 
         }
 
-        //Mostrar Ligas que puede gestionar este usu
+        //Mostrar Ligas que puede gestionar este usuario
         else if($this->Usuario->isLogged()){
+
+            $ligas = $this->Leagues->getLigasFromUserId();
+
             $this->load->view('template', 
-                ['body'=>$this->load->view('forbidden',[], true)]);
+                ['body'=>$this->load->view('ligasByLogged',['ligas' => $ligas], true)]);
         }
 
         //Mostrar ligas públicas
@@ -129,8 +137,16 @@ class Ligas extends CI_Controller {
             $ligas = $this->Leagues->getLigasPublicas();
 
             $this->load->view('template', 
-                ['body'=>$this->load->view('ligasNotLogged',['ligas' => $ligas], true)]);
+                ['body'=>$this->load->view('ligaspublicas',['ligas' => $ligas], true)]);
         }
+    }
+
+    function getLigasPublicas(){
+
+        $ligas = $this->Leagues->getLigasPublicas();
+
+            $this->load->view('template', 
+                ['body'=>$this->load->view('ligaspublicas',['ligas' => $ligas], true)]);
     }
 
 

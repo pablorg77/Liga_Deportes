@@ -3,13 +3,12 @@
 	<meta charset="utf-8">
     <meta name="description" content="Liga de deportes">
     <meta name="author" content="Pablo Rodriguez Gonzalez">
-    <?header('Access-Control-Allow-Origin: *');
+    <?php header('Access-Control-Allow-Origin: *');
       header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
       header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
       header("Allow: GET, POST, OPTIONS, PUT, DELETE");
       $method = $_SERVER['REQUEST_METHOD'];
-        if($method == "OPTIONS") {
-          die();}?>
+        if($method == "OPTIONS") {die();}?>
   
     <title>Liga de deportes</title>
 
@@ -32,22 +31,24 @@
 <body id="top">
 <div id="topbar" class="clear form-horizontal">
 <div class="row">
-  <div class="col-xs-12 col-md-6" id="options1">
+  <div class="col-xs-12 col-md-5" id="options1">
       <ul class="nospace">
         <div class="col-xs-3">
         <li><a href="<?=site_url('Principal');?>">Página principal</a></li>
-        <li><a href="<?=site_url('Ligas');?>">Ligas públicas</a></li>
+        <li><a href="<?=site_url('Ligas/getLigasPublicas');?>">Ligas públicas</a></li>
+        <?php if ($ci->Usuario->isLogged()):?>
         <li><a href="<?=site_url('Ligas');?>">Mis ligas</a></li>
+        <?php endif;?>
         <?php if (! $ci->Usuario->isLogged()):?>
         <li><a href="<?=site_url('Principal/register');?>">Registrarse</a></li>
         <?php endif;?>
       </ul><br/>
     </div>
     <?php if (! $ci->Usuario->isLogged()){?>
+      <div class="form-group col-md-7">
         <form method="post" action="<?=site_url('Login')?>">
-        <div class="form-group">
           <div class="row" style="margin-left:2%;">
-            <div class="col-xs-5 col-md-5" style="margin:1%">
+            <div class="col-xs-5 col-md-4" style="margin:1%">
               <input type="text" name="usuario" id="usuario" placeholder="Usuario"/>
             </div>
             <div class="col-xs-6 col-md-6" style="margin:1%">
@@ -55,8 +56,8 @@
               <button class="fa fa-envelope-o" type="submit" value="submit"></button>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     <?php }else{?>
     <div class="col-md-4"></div>
     <div class="col-xs-12 col-md-2" id="options3">
@@ -67,17 +68,16 @@
 </div>
 <div class="wrapper row1">
   <header id="header" class="clear"> 
-    <div id="logo" class="fl_left">
+    <div id="logo" class="fl_left col-xs-12">
       <h2>¡Siga los encuentros de su equipo!</h2>
     </div>
     <nav id="mainav" class="fl_right">
-    <div class="row">
+    <div class="row col-xs-12">
       <ul class="clear">
         <li><a class="drop" href="">Sitios</a>
           <ul>
             <li><a href="<?= site_url('Sports'); ?>">Deportes</a></li>
             <li><a href="<?= site_url('Ligas'); ?>">Ligas</a></li>
-            <li><a href="pages/sidebar-left.html">Equipos</a></li>
           </ul>
         </li>
         <li><a class="drop" href="">Categorías</a>
@@ -115,7 +115,7 @@
 </div>
 
 <?=$body?>
-
+</div>
 </body>
 
 <div class="wrapper row4" style="margin-top: 50px;">

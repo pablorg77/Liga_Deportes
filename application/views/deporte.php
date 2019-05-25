@@ -11,9 +11,9 @@
   </thead>
   <tbody>
     <?php foreach($equipos as $equipo): ?>
-      <?php if($this->Usuario->isAdmin()){ ?>
-        <tr onclick="window.location = '<?= site_url('Plays/getEncuentrosPorEquipo/'.$equipo['nombre']);?>'">
-      <?php }else{ ?>
+      <?php if($this->Usuario->isAdmin() || $this->Deportes->checkIfInTeam($equipo['idequipos'])){ ?>
+        <tr onclick="window.location = '<?= site_url('Plays/getEncuentrosPorEquipo/'.$equipo['idequipos']);?>'">
+      <?php } else { ?>
         <tr>
       <?php } ?>
         <td><?= $equipo['nombre']?></td>

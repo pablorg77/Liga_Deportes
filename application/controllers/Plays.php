@@ -13,12 +13,13 @@ class Plays extends CI_Controller {
         $encuentros = $this->Encuentros->getEncuentrosPorDeporteId($id);
     }
 
-    public function getEncuentrosPorEquipo($nombre){
+    public function getEncuentrosPorEquipo($idEquipo){
 
-        $encuentros = $this->Encuentros->getEncuentrosPorEquipo($nombre);
+        $encuentros = $this->Encuentros->getEncuentrosPorEquipo($idEquipo);
+        $equipo = $this->Deportes->getEquipoByid($idEquipo);
 
         $this->load->view('template', 
-			['body'=>$this->load->view('encuentrosPorEquipo',['encuentros'=>$encuentros, 'equipo' => $nombre], true)]);
+			['body'=>$this->load->view('encuentrosPorEquipo',['encuentros'=>$encuentros, 'equipo' => $equipo], true)]);
     }
 
     public function getEncuentrosPorLiga($idliga){

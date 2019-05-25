@@ -4,17 +4,17 @@
     <thead>
         <tr>
         <?php if($liga['deportes_iddeporte'] == 1):?>
-        <th class="th-sm" colspan="2">Ligas publicas de fútbol</tr>
+        <th class="th-sm" colspan="2">Ligas públicas de fútbol</tr>
         <?php endif; if($liga['deportes_iddeporte'] == 2):?>
-        <th class="th-sm" colspan="2">Ligas publicas de baloncesto</tr>
+        <th class="th-sm" colspan="2">Ligas públicas de baloncesto</tr>
         <?php endif; if($liga['deportes_iddeporte'] == 3):?>
-        <th class="th-sm" colspan="2">Ligas publicas de tenis</tr>
+        <th class="th-sm" colspan="2">Ligas públicas de tenis</tr>
         <?php endif; if($liga['deportes_iddeporte'] == 4):?>
-        <th class="th-sm" colspan="2">Ligas publicas de natación</tr>
+        <th class="th-sm" colspan="2">Ligas públicas de natación</tr>
         <?php endif; if($liga['deportes_iddeporte'] == 5):?>
-        <th class="th-sm" colspan="2">Ligas publicas de balonmano</tr>
+        <th class="th-sm" colspan="2">Ligas públicas de balonmano</tr>
         <?php endif; if($liga['deportes_iddeporte'] == 6):?>
-        <th class="th-sm" colspan="2">Ligas publicas de esgrima</tr>
+        <th class="th-sm" colspan="2">Ligas públicas de esgrima</tr>
         <?php endif;?>
         <th class="th-sm" colspan="1">Nombre</th>
         <th class="th-sm" colspan="1">Descripcion</th>
@@ -29,4 +29,3 @@
     </table>
 <?php endforeach;?>
 </div><br/>
-

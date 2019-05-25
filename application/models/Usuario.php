@@ -83,36 +83,24 @@ class Usuario extends CI_Model{
             return false;
     }
 
-    function getDataFromLoggedUser(){
+    function isGestorAllowed($idliga){
 
-        if($this->isLogged())
-            $id=$this->session->userdata('user')->idusuario;
-        else
-            $id='';
+    }
+
+    function isAllowed($idliga){
 
         $query=$this->db
-        ->select('*')
-        ->from('usuarios')
-        ->where('idusuarios',$id)
-        ->get();
-            return $query->row();
-    }
-
-    function getUsername(){
-
-        echo "<div style='float:right;color:white'>Bienvenido: ". $this->session->userdata('user')->nombre ." ".
-            $this->session->userdata('user')->apellidos."</div>";
-        
-    }
-
-    function changePassFromId($id, $newPass){
-
-        $newPass=password_hash($newPass, PASSWORD_DEFAULT);
-
-        $this->db
-        ->set('pass', $newPass)
-        ->where('idusuarios',$id)
-        ->update('usuarios');
+            ->select('*')
+            ->from('usuario_en_equipo')
+            ->where('liga_idliga', $idliga)
+            ->where('usuarios_idusuarios',$this->session->userdata('user')->idusuarios)
+            ->get();
+        if($query!=null){
+            return true;
+        }
+        else{
+            return false;
+        }
 
     }
 

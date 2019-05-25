@@ -19,13 +19,25 @@ class Encuentros extends CI_Model{
         return $query->result_array();
     }
 
-    function getEncuentrosPorEquipo($equipo){
+    function getEncuentrosPorEquipo($idEquipo){
+
         $query=$this->db
-            ->select('*')
-            ->from('encuentros')
-            ->where('local = "'.$equipo.'" OR visitante = "'.$equipo.'"')
-            ->get();
-        return $query->result_array();
+        ->select('*')
+        ->from('equipos')
+        ->where('idequipos', $idEquipo)
+        ->get();
+        $equipo = $query->row();
+        if($equipo!=null){
+            $getQuery=$this->db
+                ->select('*')
+                ->from('encuentros')
+                ->where('local = "'.$equipo->nombre.'" OR visitante = "'.$equipo->nombre.'"')
+                ->get();
+            return $getQuery->result_array();
+        }
+        else{
+            return null;
+        }
     }
 
     function getEncuentrosPorLiga($idliga){

@@ -40,6 +40,7 @@
       <th class="th-sm">Visitante</th>
       <th class="th-sm">Resultados</th>
       <th class="th-sm">Ganador</th>
+      <th class="th-sm">Lugar</th>
     </tr>
   </thead>
   <tbody>
@@ -54,6 +55,7 @@
         <td></td>
     <?php }?>
         <td><?= $encuentro['resultado']?></td>
+        <td><?= $encuentro['lugar']?></td>
     </tr>
     <?php endforeach;?>
   </tbody>

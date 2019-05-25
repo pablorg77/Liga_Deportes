@@ -3,6 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller {
 
+    function __construct(){
+        parent::__construct();
+        $this->load->library('cart');
+        $this->load->model('Emailme');
+        require 'vendor/autoload.php';
+    }
+
     public function index(){
 
         if($this->input->post()){
@@ -42,12 +49,14 @@ class Login extends CI_Controller {
                 ['body'=>$this->load->view('solicitud',[],true)]);
         }
         else{
-            $this->load->view('template',
+
+
+            /*$this->load->view('template',
                 ['body'=>$this->load->view('index',[],true)]);
 
                 if($this->session->has_userdata('solicitudes')){
 
-                }
+                }*/
         }
 
     }

@@ -21,6 +21,7 @@ class Principal extends CI_Controller {
 			['body'=>$this->load->view('register',[], true)]);
 
 	}
+	
 
 
 
