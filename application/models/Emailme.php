@@ -4,7 +4,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class Emailme extends CI_Model{
     
-    function notify($correo,$user,$subject,$body){
+    function notify($correo, $user, $subject, $body){
         try {
            
             $mail = new PHPMailer(true);

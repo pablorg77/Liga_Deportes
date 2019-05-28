@@ -60,7 +60,6 @@ class Deportes extends CI_Model{
             ->where('deportes_iddeporte', $id)
             ->get();
         return $query->result_array();
-
     }
 
     function getEncuentrosByDeporteId($id){
@@ -71,11 +70,9 @@ class Deportes extends CI_Model{
             ->where('deportes_iddeporte', $id)
             ->get();
         return $query->result_array();
-
     }
 
     function getEncuentrosByLigaId($id){
-        
         $query=$this->db
             ->select('*')
             ->from('encuentros')
@@ -83,6 +80,37 @@ class Deportes extends CI_Model{
             ->get();
         return $query->result_array();
 
+    }
+
+    function getEquiposByUsuarioId(){
+        $arrEquipos = [];
+
+        if($this->Usuario->isLogged()){
+            $query=$this->db
+            ->select('equipos_idequipos')
+            ->from('usuario_en_equipo')
+            ->where('usuarios_idusuarios', $this->session->userdata('user')->idusuarios)
+            ->get();
+        $equiposId = $query->result_array();
+            if($equiposId!=null){
+                
+                foreach($equiposId as $id){
+                    $queryEq=$this->db
+                    ->select('*')
+                    ->from('equipos')
+                    ->where('idequipos', $id['equipos_idequipos'])
+                    ->get();
+                    $arrEquipos = $queryEq->result_array();
+                }
+                return $arrEquipos;
+            }
+            else{
+                return null;
+            }
+        }
+        else{
+            return null;
+        }
     }
 
     function checkIfInTeam($equipoId){
@@ -105,7 +133,14 @@ class Deportes extends CI_Model{
         else{
             return null;
         }
+    }
 
+    function setNotify($equipoId){
+        $this->db
+        ->set('notificacion', 1)
+        ->where('equipos_idequipos', $equipoId)
+        ->where('usuarios_idusuarios', $this->session->userdata('user')->idusuarios)
+        ->update('usuario_en_equipo');
     }
 
 }

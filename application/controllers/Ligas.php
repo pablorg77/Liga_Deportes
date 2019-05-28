@@ -58,19 +58,17 @@ class Ligas extends CI_Controller {
         $this->form_validation->set_rules('nombre', 'Nombre', 'required',
                 array('required' => 'Campo requerido'));
 
-            if ($this->form_validation->run() == FALSE)
-            {
-                $this->load->view('template',
-                ['body'=>$this->load->view('liga',['deportes'=>$deportes],true)]);
-            }
-            else
-            {
-                
-                $this->Leagues->setLiga($this->input->post());
-                
-                $this->load->view('template',
-                        ['body'=>$this->load->view('index',[],true)]);
-            }
+        if ($this->form_validation->run() == FALSE){
+            $this->load->view('template', 
+                ['body'=>$this->load->view('liga',[], true)]);
+        }
+        else{
+            
+            $this->Leagues->setLiga($this->input->post());
+            
+            $this->load->view('template',
+                    ['body'=>$this->load->view('completed',[],true)]);
+        }
     }
 
     function getLigas(){
@@ -102,24 +100,30 @@ class Ligas extends CI_Controller {
         else if($this->Usuario->isGestor()){
 
             $ligas = $this->Leagues->getLigasGestor();
-            
-            $this->load->view('template', 
-                ['body'=>$this->load->view('ligasByLogged',['ligas' => $ligas], true)]);
-
-            /*if($this->input->post('selectDeporte')!=null){
-                $ligas = $this->Leagues->getLigasGestor($this->input->post('selectDeporte'));
-
-                if($this->input->post('selectLiga')!=null){
-                    $encuentros = $this->Deportes->getEncuentrosByLigaId($this->input->post('selectLiga'));
-                }
+            if($ligas != null){
+                $this->load->view('template', 
+                    ['body'=>$this->load->view('ligasByLogged',['ligas' => $ligas], true)]);
             }
             else{
-                $ligas = null;
+                $ligas = $this->Leagues->getLigasFromUserId();
+
+                if($ligas != null){
+                    $this->load->view('template', 
+                        ['body'=>$this->load->view('ligasByLogged',['ligas' => $ligas], true)]);
+                }
+                else{
+                    $ligas = $this->Leagues->getLigasPublicas();
+
+                    $this->load->view('template', 
+                        ['body'=>$this->load->view('ligaspublicas',['ligas' => $ligas], true)]);
+                }
+                
             }
+            
+            $ligas = $this->Leagues->getLigasPublicas();
 
             $this->load->view('template', 
-                ['body'=>$this->load->view('ligasUsuario',[
-                    'deportes' => $deportes,'ligas' => $ligas, 'encuentros' => $encuentros], true)]);*/
+                ['body'=>$this->load->view('ligaspublicas',['ligas' => $ligas], true)]);
 
         }
 

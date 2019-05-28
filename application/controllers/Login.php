@@ -3,13 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller {
 
-    function __construct(){
-        parent::__construct();
-        $this->load->library('cart');
-        $this->load->model('Emailme');
-        require 'vendor/autoload.php';
-    }
-
     public function index(){
 
         if($this->input->post()){
@@ -17,19 +10,15 @@ class Login extends CI_Controller {
                 redirect('Principal');
             }
             else{ 
-                $this->load->view('template',[
-                    'body'=>$this->load->view('index', [], true)]);
+                redirect('Principal');
             }
         }
         else{
-            $this->load->view('template',[
-                'body'=>$this->load->view('index', [], true)]);
+            redirect('Principal');
         }
     }
 
     public function solicitud(){
-
-        $this->load->library('cart');
 
         $this->form_validation->set_rules('dni', 'Dni', 'trim|required|exact_length[9]|callback_validadni_check');
         $this->form_validation->set_rules('telefono', 'Telefono', 'required');
@@ -45,18 +34,19 @@ class Login extends CI_Controller {
 
         
         if ($this->form_validation->run() == FALSE){
-            $this->load->view('template',
-                ['body'=>$this->load->view('solicitud',[],true)]);
+
+            $this->load->view('template', 
+                ['body'=>$this->load->view('solicitud',[], true)]);
         }
         else{
 
+            $this->load->model('Solicitud');
 
-            /*$this->load->view('template',
-                ['body'=>$this->load->view('index',[],true)]);
+            $this->Solicitud->setSolicitud($this->input->post());
 
-                if($this->session->has_userdata('solicitudes')){
+            $this->load->view('template',
+                ['body'=>$this->load->view('completed',[],true)]);
 
-                }*/
         }
 
     }
@@ -82,18 +72,17 @@ class Login extends CI_Controller {
         $this->form_validation->set_rules('apellidos', 'Apellidos', 'required',
                 array('required' => 'Campo requerido'));     
 
-        if ($this->form_validation->run() == FALSE)
-            {
+        if ($this->form_validation->run() == FALSE){
+            
                 $this->load->view('template',
-                ['body'=>$this->load->view('register',[],true)]);
-            }
-            else
-            {
-                $this->load->view('template',
-                ['body'=>$this->load->view('index',[],true)]);
-
+                    ['body'=>$this->load->view('register',[],true)]);
+        }
+        else{
                 $this->Usuario->setRegistro($this->input->post());
-            }
+
+                $this->load->view('template',
+                    ['body'=>$this->load->view('completed',[],true)]);
+        }
     }
 
     public function logOut(){

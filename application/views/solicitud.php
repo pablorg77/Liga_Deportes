@@ -12,7 +12,7 @@
     <div class="form-group">
         <label for="telefono">Telefono: </label>
         <input type="text" class="form-control" name="telefono" placeholder="Teléfono">
-        <?= form_error('tlf');?>
+        <?= form_error('telefono');?>
     </div>
     <div class="form-group">
         <label for="residencia">Residencia: </label>

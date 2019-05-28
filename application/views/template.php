@@ -105,7 +105,7 @@
         <?php endif;?>
         <?php if ($ci->Usuario->isAdmin()):?>
             <li><a href="<?= site_url('Ligas')?>">Administrar ligas</a></li>
-            <li><a href="#">Solicitudes</a></li>
+            <li><a href="<?=site_url('Principal/getSolicitudes')?>">Solicitudes</a></li>
         </div>
        <?php endif;?>
       </ul>

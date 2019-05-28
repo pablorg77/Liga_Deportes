@@ -14,15 +14,15 @@ class Usuario extends CI_Model{
 
         $this->db
         ->set('tipo', 1)
-        ->where('idusuarios',$id)
+        ->where('idusuarios', $id)
         ->update('usuarios');
     }
 
-    function changeTypeToManager($id){
+    function changeTypeToGestor($id){
 
         $this->db
         ->set('tipo', 2)
-        ->where('idusuarios',$id)
+        ->where('idusuarios', $id)
         ->update('usuarios');
     }
 
@@ -30,7 +30,7 @@ class Usuario extends CI_Model{
 
         $this->db
         ->set('tipo', 3)
-        ->where('idusuarios',$id)
+        ->where('idusuarios', $id)
         ->update('usuarios');
     }
 
@@ -39,7 +39,7 @@ class Usuario extends CI_Model{
         $query=$this->db
             ->select('*')
             ->from('usuarios')
-            ->where('usuario',$user)
+            ->where('usuario', $user)
             ->get();
         $user_data=$query->row();
         if (!$user_data){
