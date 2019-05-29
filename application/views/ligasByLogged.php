@@ -39,38 +39,38 @@
         <tr>
         <?php if($liga['deportes_iddeporte'] == 1):
             $cols = 2;
-            if($this->Leagues->isAdministrable($liga['idliga'])):
+            if($this->Leagues->isGestorAllowed($liga['idliga']) || $this->Usuario->isAdmin()):
                 $cols = 3;?>
             <th class="th-sm" colspan="<?=$cols?>">Ligas de fútbol</tr>
         <?php endif; endif; if($liga['deportes_iddeporte'] == 2):
             $cols = 2;
-            if($this->Leagues->isAdministrable($liga['idliga'])):
+            if($this->Leagues->isGestorAllowed($liga['idliga']) || $this->Usuario->isAdmin()):
                 $cols = 3;?>
             <th class="th-sm" colspan="<?=$cols?>">Ligas de baloncesto</tr>
         <?php endif; endif; if($liga['deportes_iddeporte'] == 3):
             $cols = 2;
-            if($this->Leagues->isAdministrable($liga['idliga'])):
+            if($this->Leagues->isGestorAllowed($liga['idliga']) || $this->Usuario->isAdmin()):
                 $cols = 3;?>
             <th class="th-sm" colspan="<?=$cols?>">Ligas de tenis</tr>
         <?php endif; endif; if($liga['deportes_iddeporte'] == 4):
             $cols = 2;
-            if($this->Leagues->isAdministrable($liga['idliga'])):
+            if($this->Leagues->isGestorAllowed($liga['idliga']) || $this->Usuario->isAdmin()):
                 $cols = 3;?>
             <th class="th-sm" colspan="<?=$cols?>">Ligas de natación</tr>
         <?php endif; endif; if($liga['deportes_iddeporte'] == 5):
             $cols = 2;
-            if($this->Leagues->isAdministrable($liga['idliga'])):
+            if($this->Leagues->isGestorAllowed($liga['idliga']) || $this->Usuario->isAdmin()):
                 $cols = 3;?>
             <th class="th-sm" colspan="<?=$cols?>">Ligas de balonmano</tr>
         <?php endif; endif; if($liga['deportes_iddeporte'] == 6):
             $cols = 2;
-            if($this->Leagues->isAdministrable($liga['idliga'])):
+            if($this->Leagues->isGestorAllowed($liga['idliga']) || $this->Usuario->isAdmin()):
                 $cols = 3;?>
             <th class="th-sm" colspan="<?=$cols?>">Ligas de esgrima</tr>
         <?php endif; endif;?>
         <th class="th-sm" colspan="1">Nombre</th>
         <th class="th-sm" colspan="1">Descripcion</th>
-        <?php if($this->Leagues->isAdministrable($liga['idliga'])):?>
+        <?php if($this->Leagues->isGestorAllowed($liga['idliga'])):?>
             <th class="th-sm" colspan="1">Acciones</tr>
         <?php endif;?>
         </tr>
@@ -79,7 +79,7 @@
         <tr onclick="window.location = '<?= site_url('Plays/getEncuentrosPorLiga/'.$liga['idliga']);?>'">
             <td colspan="1"><?=$liga['nombre']?></td>
             <td colspan="1"><?=$liga['descripcion']?></td>
-            <?php if($this->Leagues->isAdministrable($liga['idliga'])):?>
+            <?php if($this->Leagues->isGestorAllowed($liga['idliga'])):?>
                 <td class="th-sm" colspan="1"><a href="">Modificar</a> | <a href="">Borrar</a></td>
             <?php endif;?>
         </tr>

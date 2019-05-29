@@ -52,30 +52,6 @@ class Leagues extends CI_Model{
         return $query->result_array();
     }
 
-    /*function getLigasGestor($idDeporte){
-
-        $arr = [];
-
-        $query=$this->db
-            ->select('*')
-            ->from('adminby')
-            ->where('usuarios_idUsuarios', $this->session->userdata('user')->idusuarios)
-            ->get();
-        $aux = $query->result_array();
-        if($aux!=null){
-            $getQuery=$this->db
-            ->select('*')
-            ->from('liga')
-            ->where('deportes_iddeporte', $idDeporte)
-            ->where('liga_idliga', $aux['idliga'])
-            ->get();
-        return $getQuery->result_array();
-        }
-        else{
-            return null;
-        }
-    }*/
-
     function getLigasFromUserId(){
 
         $arrEquipos = [];
@@ -154,23 +130,6 @@ class Leagues extends CI_Model{
         }
     }
 
-    function isAdministrable($idliga){
-
-        $query=$this->db
-            ->select('*')
-            ->from('adminby')
-            ->where('usuarios_idusuarios', $this->session->userdata('user')->idusuarios)
-            ->where('liga_idliga', $idliga)
-            ->get();
-        $aux = $query->result_array();
-        if($aux!=null){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
     function getLigasPublicas(){
 
         $query=$this->db
@@ -231,20 +190,54 @@ class Leagues extends CI_Model{
 
     function isUsuarioAllowed($idliga){
 
-        if($this->Usuario->isLogged()){
-            $query=$this->db
+        $arrEquipos = [];
+        $arrEncuentros = [];
+        $arrLigas = [];
+
+        $query=$this->db
+            ->select('equipos_idequipos')
+            ->from('usuario_en_equipo')
+            ->where('usuarios_idusuarios', $this->session->userdata('user')->idusuarios)
+            ->get();
+        $aux = $query->result_array();
+        if($aux!=null){
+            foreach($aux as $equipo){
+
+                $getQueryEq=$this->db
                 ->select('*')
-                ->from('adminby')
-                ->where('usuarios_idusuarios', $this->session->userdata('user')->idusuarios)
-                ->where('liga_idliga', $idliga)
+                ->from('equipos')
+                ->where('idequipos', $equipo['equipos_idequipos'])
                 ->get();
-            if($query->result_array()==null)
-                return false;
-            else
+                $arrEquipos = $getQueryEq->result_array();
+            }
+
+            foreach($arrEquipos as $equipo){
+                $getQueryEnc=$this->db
+                ->select('*')
+                ->from('encuentros')
+                ->where('local', $equipo['nombre'])
+                ->or_where('visitante', $equipo['nombre'])
+                ->get();
+                $arrEncuentros = $getQueryEnc->result_array();
+            }
+
+            foreach($arrEncuentros as $encuentro){
+
+                $getQueryLig=$this->db
+                ->select('*')
+                ->from('liga')
+                ->where('idliga', $encuentro['liga_idliga'])
+                ->get();
+                $arrLigas = $getQueryLig->result_array();                
+            }
+            
+            if($arrLigas != null){
                 return true;
             }
-            else
-                return false;
+        }
+        else{
+            return false;
+        }
     }
 
 }

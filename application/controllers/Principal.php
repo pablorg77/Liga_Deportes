@@ -11,10 +11,7 @@ class Principal extends CI_Controller {
     }
 
 	public function index(){
-
-		$categorias = $this->Deportes->getCategorias();
-		$deportes = $this->Deportes->getDeportes();
-
+		
 		$this->load->view('template', 
 			['body'=>$this->load->view('index',[], true)]);
 		
@@ -50,8 +47,7 @@ class Principal extends CI_Controller {
 			
 		}
 		else{
-			$this->load->view('template', 
-				['body'=>$this->load->view('forbidden',[], true)]);
+			redirect('Principal/forbidden');
 		}
 	}
 
@@ -67,8 +63,7 @@ class Principal extends CI_Controller {
 				['body'=>$this->load->view('completed',[], true)]);
 		}
 		else{
-			$this->load->view('template', 
-				['body'=>$this->load->view('forbidden',[], true)]);
+			redirect('Principal/forbidden');
 		}
 	}
 
@@ -83,8 +78,7 @@ class Principal extends CI_Controller {
 				['body'=>$this->load->view('completed',[], true)]);
 		}
 		else{
-			$this->load->view('template', 
-				['body'=>$this->load->view('forbidden',[], true)]);
+				redirect('Principal/forbidden');
 		}
 	}
 
@@ -99,8 +93,7 @@ class Principal extends CI_Controller {
 
 		}
 		else{
-			$this->load->view('template', 
-				['body'=>$this->load->view('forbidden',[], true)]);
+			redirect('Principal/forbidden');
 		}
 		
 	}
@@ -108,8 +101,10 @@ class Principal extends CI_Controller {
 	public function notify(){
 
 		if($this->input->post()){
-			$id = $this->input->post();
 			$this->Deportes->setNotify($this->input->post('selectDep'));
+			$encuentros = $this->Encuentros->getEncuentrosPorEquipo($this->input->post('selectDep'));
+			$this->Emailme->notify(
+				'prgdwes@gmail.com', $this->session->userdata('user')->usuario, "Horarios de su equipo", $encuentros);
 
 			$this->load->view('template', 
 				['body'=>$this->load->view('completed',[], true)]);
@@ -120,5 +115,35 @@ class Principal extends CI_Controller {
 		}
 	}
 
+	function controlUsuarios(){
+
+		$this->load->library('grocery_CRUD');
+
+		if($this->Usuario->isAdmin()){
+
+			$crud = new grocery_CRUD();
+			$crud->set_table('usuarios');
+			$crud->columns('usuario','nombre','apellidos','correo', 'tipo');
+			 
+			$output = $crud->render();
+			 
+			$this->_example_output($output);
+		}
+		else{
+			redirect('Principal/forbidden');
+		}
+
+	}
+
+	public function _example_output($output = null){
+
+			$this->load->view('CRUD.php',(array)$output);
+	}
+
+	public function forbidden(){
+
+		$this->load->view('template', 
+				['body'=>$this->load->view('forbidden',[], true)]);
+	}
 
 }

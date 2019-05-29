@@ -83,27 +83,6 @@ class Usuario extends CI_Model{
             return false;
     }
 
-    function isGestorAllowed($idliga){
-
-    }
-
-    function isAllowed($idliga){
-
-        $query=$this->db
-            ->select('*')
-            ->from('usuario_en_equipo')
-            ->where('liga_idliga', $idliga)
-            ->where('usuarios_idusuarios',$this->session->userdata('user')->idusuarios)
-            ->get();
-        if($query!=null){
-            return true;
-        }
-        else{
-            return false;
-        }
-
-    }
-
     function logOut(){
 
         $this->session->set_userdata('isIn',false);

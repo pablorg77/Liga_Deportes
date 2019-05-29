@@ -68,21 +68,24 @@
 </div>
 <div class="wrapper row1">
   <header id="header" class="clear"> 
-    <div id="logo" class="fl_left col-xs-12">
+    <div id="logo" class="fl_left col-md-6 col-xs-12">
       <h2>¡Siga los encuentros de su equipo!</h2>
     </div>
-    <nav id="mainav" class="fl_right">
-    <div class="row col-xs-12">
+    <nav id="mainav" class="fl_right col-md-6 col-xs-12" style="white-space:normal;">
+    <div class="row">
       <ul class="clear">
-        <li><a class="drop" href="">Sitios</a>
+        <li><a class="drop">Sitios</a>
           <ul>
             <li><a href="<?= site_url('Sports'); ?>">Deportes</a></li>
             <li><a href="<?= site_url('Ligas'); ?>">Ligas</a></li>
+            <?php if($this->Usuario->isAdmin()):?>
+              <li><a href="<?= site_url('Principal/controlUsuarios')?>">Gestionar usuarios</a></li><br/>
+            <?php endif;?>
           </ul>
         </li>
-        <li><a class="drop" href="">Categorías</a>
+        <li><a class="drop">Categorías</a>
           <ul>
-          <li><a class="drop" href=""><?=$categorias[0]['nombre']?></a>
+          <li><a class="drop"><?=$categorias[0]['nombre']?></a>
               <ul>
               <?php foreach($deportes as $deporte):
                 if($deporte['categorias_idcategorias']=="1"):?>
@@ -90,7 +93,7 @@
                 <?php endif; endforeach;?>
               </ul>
             </li>
-            <li><a class="drop" href=""><?=$categorias[1]['nombre']?></a>
+            <li><a class="drop"><?=$categorias[1]['nombre']?></a>
               <ul>
               <?php foreach($deportes as $deporte):
                 if($deporte['categorias_idcategorias']=="2"):?>
@@ -100,6 +103,7 @@
             </li>
           </ul>
         </li>
+        <div id="saltonav"><br/></div>
         <?php if ($ci->Usuario->isGestor()):?>
             <li><a href="<?= site_url('Ligas')?>">Administrar ligas</a></li>
         <?php endif;?>
@@ -118,11 +122,12 @@
 </div>
 </body>
 
-<div class="wrapper row4" style="margin-top: 50px;">
+<div class="wrapper row4 row" style="margin-top: 50px;">
 <footer id="footer" class="clear"> 
   <div class="row col-md-12 col-xs-12">
     <div class="col-xs-12 col-md-4" style="margin-bottom:5%">
-      <h6 class="title">Datos de contacto</h6>
+      <h6>Datos de contacto</h6>
+      <hr>
       <address class="btmspace-30">
       Liga de deportes<br>
       Pablo Rodríguez González<br>
@@ -136,7 +141,8 @@
       </ul>
     </div>
     <div class="col-xs-12 col-md-4">
-      <h6 class="title">Búsqueda rápida</h6>
+      <h6>Búsqueda rápida</h6>
+      <hr>
       <ul class="nospace linklist">
       <?php foreach($deportes as $deporte):?>
         <li><a href="<?=site_url('Sports/cargaDeporte/'.$deporte["iddeporte"]);?>">Equipos de <?=$deporte['nombre']?></a></li>

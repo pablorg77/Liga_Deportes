@@ -90,6 +90,7 @@ class Deportes extends CI_Model{
             ->select('equipos_idequipos')
             ->from('usuario_en_equipo')
             ->where('usuarios_idusuarios', $this->session->userdata('user')->idusuarios)
+            ->where('notificacion', 0)
             ->get();
         $equiposId = $query->result_array();
             if($equiposId!=null){

@@ -1,23 +1,13 @@
 #options2, #options3{
     float:right;
 }
+#saltonav{display:none}
 
-@media (min-width: 576px) { 
+@media (max-width: 576px) { 
+    hr{ display:none;}
 
-    #options2, #options3{
-        position:relative;
-        float:left;
-    }
-
+    #saltonav{display:inline}
 }
-
-@media (max-width: 990px) { 
-
-    #options2, #options3{
-        /*position:relative;*/
-    }
-}
-
 
 table.dataTable thead .sorting:after,
 table.dataTable thead .sorting:before,

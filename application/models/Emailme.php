@@ -8,7 +8,6 @@ class Emailme extends CI_Model{
         try {
            
             $mail = new PHPMailer(true);
-
             $mail->isSMTP(true);
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
@@ -20,11 +19,45 @@ class Emailme extends CI_Model{
             $mail->addAddress($correo, $user);     
             $mail->isHTML(true);                                
             $mail->Subject = $subject;
-            $mail->Body = $body;
+            $mail->Body = $this->constructBody($body);
 
             $mail->send();
         } catch (Exception $e) {
             echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
         }
+    }
+
+    function constructBody($body){
+
+        $response = "";
+
+        $response .= "<h2><strong> Horarios de los encuentros de su equipo: </strong></h2>";
+        $response .=
+        "<table border='1'>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Local</th>
+                    <th>Visitante</th>
+                    <th>Resultados</th>
+                    <th>Ganador</th>
+                    <th>Lugar</th>
+                </tr>
+            </thead>
+        <tbody>";
+        foreach($body as $encuentro){
+            $response .= "<tr>
+            <td>". $encuentro['fecha']. "</td>
+            <td>". $encuentro['local']. "</td>
+            <td>". $encuentro['visitante']. "</td>
+            <td>". $encuentro['resultadoLocal']. "--". $encuentro['resultadoVisitante']. "</td>
+            <td>". $encuentro['resultado']."</td>
+            <td>". $encuentro['lugar']."</td>
+            </tr>";
+        }
+        $response .="</tbody></table>";
+
+        return $response;
+
     }
 }

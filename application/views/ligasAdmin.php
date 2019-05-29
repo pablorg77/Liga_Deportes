@@ -3,7 +3,7 @@
   if($this->Usuario->isGestor() || $this->Usuario->isAdmin()):?>
     <h3><li><a href="<?= site_url('Ligas/addLiga')?>">Crear liga</a></li></h3><br/>
   <?php endif;?>
-      <form method="post" action="<?=site_url('Ligas/getLigas')?>">
+      <form method="post" action="<?=site_url('Ligas/gestionLigasAdmin')?>">
       <div class="row">
         <div class="col-md-5 col-xs-12">
           <select class="form-control" id="selectDeporte" onchange="this.form.submit()"
