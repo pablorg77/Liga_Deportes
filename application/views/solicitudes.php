@@ -1,11 +1,20 @@
 <div style="margin:10%">
 <h1><strong> Solicitudes a gestor </strong></h1>
+<div class="fl_right">
+<?php if($solicitudes[0]['borrado']=='N'):?>
+<a href="<?=site_url('Principal/getSolicitudesGestionadas')?>">Solicitudes gestionadas</a>
+<?php endif; if($solicitudes[0]['borrado']=='S'):?>
+<a href="<?=site_url('Principal/getSolicitudes')?>">Solicitudes</a>
+<?php endif;?>
+</div>
 <table id="tablasolicitudes" class="table table-bordered table-hover" cellspacing="0" width="100%">
 <thead>
     <tr>
       <th class="th-sm">Usuario</th>
       <th class="th-sm">Datos</th>
-      <th class="th-sm">Acciones</th>
+      <?php if($solicitudes[0]['borrado']=='N'):?>
+        <th class="th-sm">Acciones</th>
+      <?php endif;?>
     </tr>
   </thead>
   <tbody>
@@ -21,12 +30,10 @@
                 </ul>
             </li>
         </td>
-      <?php if($this->Usuario->isAdmin()){?>
+      <?php if($this->Usuario->isAdmin() && $solicitud['borrado'] == 'N'):?>
         <td><a href="<?=site_url('Principal/acceptSolicitud/'.$solicitud['idsolicitudes'])?>">Aceptar</a> | 
             <a href="<?=site_url('Principal/rejectSolicitud/'.$solicitud['idsolicitudes'])?>"> Denegar</a></td>
-    <?php }else{?>
-        <td></td>
-    <?php }?>
+      <?php endif;?>
     </tr>
     <?php endforeach;?>
   </tbody>

@@ -9,7 +9,7 @@ class Login extends CI_Controller {
             if($this->Usuario->login($this->input->post('usuario'),$this->input->post('pass'))){
                 redirect('Principal');
             }
-            else{ 
+            else{
                 redirect('Principal');
             }
         }
@@ -42,19 +42,21 @@ class Login extends CI_Controller {
 
             $this->load->model('Solicitud');
 
-            $this->Solicitud->setSolicitud($this->input->post());
+            if($this->Solicitud->setSolicitud($this->input->post())){
 
-            $this->load->view('template',
-                ['body'=>$this->load->view('completed',[],true)]);
-
+                $this->load->view('template',
+                    ['body'=>$this->load->view('completed',[],true)]);
+            }
+            else{
+                redirect('Principal/forbidden');
+            }
         }
-
     }
 
     public function register(){
 
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
-        $this->form_validation->set_rules('user', 'user', 'required');
+        $this->form_validation->set_rules('user', 'user', 'required|callback_validauser_check');
         $this->form_validation->set_rules('pass', 'pass', 'trim|required|min_length[6]');
         $this->form_validation->set_rules('nombre', 'Nombre', 'required');
         $this->form_validation->set_rules('apellidos', 'Apellidos', 'required');
@@ -62,7 +64,7 @@ class Login extends CI_Controller {
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email',
                 array('required' => 'Campo requerido', 
                 'valid_email' => 'Formato incorrecto'));
-        $this->form_validation->set_rules('user', 'user', 'required',
+        $this->form_validation->set_rules('user', 'user', 'required|callback_validauser_check',
                 array('required' => 'Campo requerido'));
         $this->form_validation->set_rules('pass', 'pass', 'trim|required|min_length[6]',
                 array('required' => 'Campo requerido', 
@@ -70,7 +72,7 @@ class Login extends CI_Controller {
         $this->form_validation->set_rules('nombre', 'Nombre', 'required',
                 array('required' => 'Campo requerido'));
         $this->form_validation->set_rules('apellidos', 'Apellidos', 'required',
-                array('required' => 'Campo requerido'));     
+                array('required' => 'Campo requerido'));
 
         if ($this->form_validation->run() == FALSE){
             
@@ -80,8 +82,9 @@ class Login extends CI_Controller {
         else{
                 $this->Usuario->setRegistro($this->input->post());
 
-                $this->load->view('template',
-                    ['body'=>$this->load->view('completed',[],true)]);
+                    $this->load->view('template',
+                        ['body'=>$this->load->view('completed',[],true)]);
+                
         }
     }
 
@@ -103,6 +106,19 @@ class Login extends CI_Controller {
             $this->form_validation->set_message('validadni_check', 'El dni no es correcto');
             return false;
         }
+      }
+
+      public function validauser_check($user){
+
+        $usuarios=$this->Usuario->getAllUsuarios();
+    
+        foreach($usuarios as $usuario){
+            if ($user==$usuario['usuario']){
+                $this->form_validation->set_message('validauser_check', 'Usuario existente');
+                return false;
+            }
+        }
+        return true;
       }
       
 }

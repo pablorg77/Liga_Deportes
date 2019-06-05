@@ -22,10 +22,25 @@ class Solicitud extends CI_Model{
 	}
 	
 	function setSolicitud($data){
+
+		$query=$this->db
+            ->select('*')
+			->from('solicitudes')
+			->where('borrado', 'S')
+			->where('usuarios_idusuarios', $this->session->userdata('user')->idusuarios)
+            ->get();
+		$aux = $query->row();
+		if($aux!=null){
+			return false;
+		}
+		else{
+			$this->db->query('INSERT INTO solicitudes (usuarios_idusuarios, nombre, telefono, residencia, dni, aceptada, borrado) 
+        	VALUES ("'.$this->session->userdata('user')->idusuarios.'","'.$this->session->userdata('user')->usuario.
+			'","'.$data["telefono"].'","'.$data["residencia"].'","'.$data["dni"].'", 0, "N")');
+
+			return true;
+		}
 		
-		$this->db->query('INSERT INTO solicitudes (usuarios_idusuarios, nombre, telefono, residencia, dni, aceptada, borrado) 
-        VALUES ("'.$this->session->userdata('user')->idusuarios.'","'.$this->session->userdata('user')->usuario.
-		'","'.$data["telefono"].'","'.$data["residencia"].'","'.$data["dni"].'", 0, "N")');
 	}
 	
 	function setBorradoSolicitud($idSol){
@@ -47,6 +62,15 @@ class Solicitud extends CI_Model{
         ->set('aceptada', 'N')
         ->where('idsolicitudes', $idSol)
         ->update('solicitudes');
+	}
+
+	function getSolicitudesGestionadas(){
+		$query=$this->db
+            ->select('*')
+			->from('solicitudes')
+			->where('borrado', 'S')
+            ->get();
+        return $query->result_array();
 	}
 
 

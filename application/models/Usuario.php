@@ -4,10 +4,23 @@ class Usuario extends CI_Model{
 
     function setRegistro($data){
 
-        $newPass=password_hash($data['pass'], PASSWORD_DEFAULT);
-        
-        $this->db->query('INSERT INTO usuarios (usuario, pass, nombre, apellidos, tipo, correo) 
-        VALUES ("'.$data["user"].'","'.$newPass.'","'.$data["nombre"].'","'.$data["apellidos"].'", 3,"'.$data["email"].'")');
+        $query=$this->db
+            ->select('*')
+            ->from('usuarios')
+            ->where('usuario', $data["user"])
+            ->get();
+        $user_data=$query->row();
+        if ($user_data!=null){
+            return false;
+        }
+        else{
+            $newPass=password_hash($data['pass'], PASSWORD_DEFAULT);
+            
+            $this->db->query('INSERT INTO usuarios (usuario, pass, nombre, apellidos, tipo, correo) 
+            VALUES ("'.$data["user"].'","'.$newPass.'","'.$data["nombre"].'","'.$data["apellidos"].'", 3,"'.$data["email"].'")');
+
+            return true;
+        }
     }
 
     function changeTypeToAdmin($id){
@@ -32,6 +45,15 @@ class Usuario extends CI_Model{
         ->set('tipo', 3)
         ->where('idusuarios', $id)
         ->update('usuarios');
+    }
+
+    function getAllusuarios(){
+
+        $query=$this->db
+            ->select('usuario')
+            ->from('usuarios')
+            ->get();
+        return $query->result_array();
     }
 
     function login($user, $pass){

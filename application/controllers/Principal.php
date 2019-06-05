@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Principal extends CI_Controller {
 
 	function __construct(){
-        parent::__construct();
-        $this->load->model('Emailme');
+    parent::__construct();
+  	$this->load->model('Emailme');
 		require 'vendor/autoload.php';
 		$this->load->model('Solicitud');
     }
@@ -32,23 +32,31 @@ class Principal extends CI_Controller {
 	
 	public function getSolicitudes(){
 
-		if($this->Usuario->isLogged() && $this->Usuario->isAdmin()){
+		if($this->Usuario->isAdmin()){
 			
 			$solicitudes = $this->Solicitud->getSolicitudes();
+			
 			if($solicitudes != null){
 
 				$this->load->view('template', 
 					['body'=>$this->load->view('solicitudes',['solicitudes' => $solicitudes], true)]);
 			}
 			else{
-				$this->load->view('template', 
-					['body'=>$this->load->view('index',[], true)]);
+				 redirect('Principal/getSolicitudesGestionadas');
 			}
 			
 		}
 		else{
 			redirect('Principal/forbidden');
 		}
+	}
+
+	function getSolicitudesGestionadas(){
+
+		$solicitudesGestionadas = $this->Solicitud->getSolicitudesGestionadas();
+
+		$this->load->view('template', 
+					['body'=>$this->load->view('solicitudes',['solicitudes' => $solicitudesGestionadas], true)]);
 	}
 
 	public function acceptSolicitud($idSol){
