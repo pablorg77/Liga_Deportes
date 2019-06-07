@@ -19,8 +19,7 @@
     <script src="<?=base_url();?>assets/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="<?=base_url();?>assets/bootstrap/js/bootstrap.bundle.min.js" type="text/javascript"></script>
     <link href="<?=base_url();?>assets/css/jquery.dataTables.min.css" rel="stylesheet">
-    <script src="<?=base_url();?>assets/js/jquery.dataTables.min.js" type="text/javascript"></script>
-    
+    <script src="<?=base_url();?>assets/js/jquery.dataTables.min.js" type="text/javascript"></script>    
 
     <?php 
       $ci=get_instance();
@@ -61,7 +60,7 @@
     <?php }else{?>
     <div class="col-md-4"></div>
     <div class="col-xs-12 col-md-2" id="options3">
-      | <li><a href="<?=site_url('Login/logOut')?>"> Cerrar sesión </a> </li> | 
+      | <li>Bienvenido: <?=$this->session->userdata('user')->usuario?> | <a href="<?=site_url('Login/logOut')?>"> Cerrar sesión </a> </li> | 
     </div>
     <?php }?>
   </div>

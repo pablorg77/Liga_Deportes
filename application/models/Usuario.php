@@ -23,14 +23,6 @@ class Usuario extends CI_Model{
         }
     }
 
-    function changeTypeToAdmin($id){
-
-        $this->db
-        ->set('tipo', 1)
-        ->where('idusuarios', $id)
-        ->update('usuarios');
-    }
-
     function changeTypeToGestor($id){
 
         $this->db
@@ -45,6 +37,32 @@ class Usuario extends CI_Model{
         ->set('tipo', 3)
         ->where('idusuarios', $id)
         ->update('usuarios');
+    }
+    
+    function getGestores($idliga){
+
+        $arrGests = [];
+        
+        $getQuery = $this->db
+            ->select('usuarios_idusuarios')
+            ->from('adminby')
+            ->where('liga_idliga', $idliga)
+            ->get();
+        
+        $aux = $getQuery->row();
+
+        foreach($aux as $usuario){
+            $query=$this->db
+            ->select('*')
+            ->from('usuarios')
+            ->where('tipo', 2)
+            ->where('idusuarios !=', $usuario)
+            ->get();
+
+            $arrGests[] = $query->result_array();
+        }
+        return $arrGests;
+        
     }
 
     function getAllusuarios(){

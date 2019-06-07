@@ -26,6 +26,14 @@ class Deportes extends CI_Model{
         return $query->result_array();
     }
 
+    function getEquipos(){
+        $query=$this->db
+        ->select('*')
+        ->from('equipos')
+        ->get();
+    return $query->result_array();
+    }
+
     function getEquipoByid($id){
         $query=$this->db
             ->select('*')
@@ -117,20 +125,20 @@ class Deportes extends CI_Model{
     function checkIfInTeam($equipoId){
 
         if($this->Usuario->isLogged()){
-        $query=$this->db
-        ->select('*')
-        ->from('usuario_en_equipo')
-        ->where('equipos_idequipos', $equipoId)
-        ->where('usuarios_idusuarios', $this->session->userdata('user')->idusuarios)
-        ->get();
+            $query=$this->db
+            ->select('*')
+            ->from('usuario_en_equipo')
+            ->where('equipos_idequipos', $equipoId)
+            ->where('usuarios_idusuarios', $this->session->userdata('user')->idusuarios)
+            ->get();
 
-            if($query->result_array()!=null){
-                return true;
+                if($query->result_array()!=null){
+                    return true;
+                }
+                else{
+                    return null;
+                }
             }
-            else{
-                return null;
-            }
-        }
         else{
             return null;
         }

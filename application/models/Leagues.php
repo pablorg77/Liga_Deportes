@@ -6,6 +6,7 @@ class Leagues extends CI_Model{
         $query=$this->db
             ->select('*')
             ->from('liga')
+            ->where('borrado', 'N')
             ->get();
         return $query->result_array();
     }
@@ -48,6 +49,7 @@ class Leagues extends CI_Model{
             ->select('*')
             ->from('liga')
             ->where('deportes_iddeporte', $idDeporte)
+            ->where('borrado', 'N')
             ->get();
         return $query->result_array();
     }
@@ -55,7 +57,6 @@ class Leagues extends CI_Model{
     function getLigasFromUserId(){
 
         $arrEquipos = [];
-        $arrEncuentros = [];
         $arrLigas = [];
 
         $query=$this->db
@@ -68,31 +69,25 @@ class Leagues extends CI_Model{
             foreach($aux as $equipo){
 
                 $getQueryEq=$this->db
-                ->select('*')
-                ->from('equipos')
-                ->where('idequipos', $equipo['equipos_idequipos'])
+                ->select('liga_idliga')
+                ->from('equipo_en_liga')
+                ->where('equipos_idequipos', $equipo['equipos_idequipos'])
                 ->get();
-                $arrEquipos = $getQueryEq->result_array();
+                $arrEquipos[] = $getQueryEq->result_array();
             }
-
-            foreach($arrEquipos as $equipo){
-                $getQueryEnc=$this->db
-                ->select('*')
-                ->from('encuentros')
-                ->where('local', $equipo['nombre'])
-                ->or_where('visitante', $equipo['nombre'])
-                ->get();
-                $arrEncuentros = $getQueryEnc->result_array();
+            foreach($arrEquipos as $equip){
+                foreach($equip as $e){
+                    $arrEquipos = $e;
+                }
             }
-
-            foreach($arrEncuentros as $encuentro){
-
+            foreach($arrEquipos as $idLiga){
                 $getQueryLig=$this->db
                 ->select('*')
                 ->from('liga')
-                ->where('idliga', $encuentro['liga_idliga'])
+                ->where('idliga', $idLiga)
+                ->where('borrado', 'N')
                 ->get();
-                $arrLigas = $getQueryLig->result_array();                
+                $arrLigas[] = $getQueryLig->result_array();                
             }
             
         return $arrLigas;
@@ -114,13 +109,13 @@ class Leagues extends CI_Model{
         $aux = $query->result_array();
         if($aux!=null){
             foreach($aux as $liga){
-
                 $getQueryLig=$this->db
                 ->select('*')
                 ->from('liga')
                 ->where('idliga', $liga['liga_idliga'])
+                ->where('borrado', 'N')
                 ->get();
-                $arrLigas = $getQueryLig->result_array();
+                $arrLigas[] = $getQueryLig->result_array();
             }
             
         return $arrLigas;
@@ -136,6 +131,7 @@ class Leagues extends CI_Model{
             ->select('*')
             ->from('liga')
             ->where('visible', 1)
+            ->where('borrado', 'N')
             ->get();
         return $query->result_array();
 
@@ -227,6 +223,7 @@ class Leagues extends CI_Model{
                 ->select('*')
                 ->from('liga')
                 ->where('idliga', $encuentro['liga_idliga'])
+                ->where('borrado', 'N')
                 ->get();
                 $arrLigas = $getQueryLig->result_array();                
             }
@@ -238,6 +235,54 @@ class Leagues extends CI_Model{
         else{
             return false;
         }
+    }
+
+    function modifyLiga($data, $id){
+  
+        $this->db->query('UPDATE liga SET nombre = "'.$data["nombre"].'", descripcion = "'.$data["descripcion"].'",
+        visible = '.$data['visible'].' WHERE idliga = "'.$id.'"');
+    }
+
+    function setGestor($idGestor, $idliga){
+
+        $query=$this->db
+            ->select('*')
+            ->from('adminby')
+            ->where('liga_idliga', $idliga)
+            ->where('usuarios_idusuarios', $idGestor)
+            ->get();
+        $aux = $query->result_array();
+        if($aux == null){
+        $this->db->query('INSERT INTO adminby (liga_idliga, usuarios_idusuarios) VALUES('.$idliga.', '.$idGestor.')');
+        }
+        else{
+            return false;
+        }
+    }
+
+    function setEquipo($equipoId, $idliga){
+        $query=$this->db
+            ->select('*')
+            ->from('equipo_en_liga')
+            ->where('liga_idliga', $idliga)
+            ->where('equipos_idequipos', $equipoId)
+            ->get();
+        $aux = $query->result_array();
+        if($aux == null){
+            $this->db->query('INSERT INTO equipo_en_liga (liga_idliga, equipos_idequipos) VALUES('.$idliga.', '.$equipoId.')');
+        }
+        else{
+            return false;
+        }
+        
+    }
+
+    function deleteLiga($id){
+
+        $this->db
+        ->set('borrado', 'S')
+        ->where('idliga', $id)
+        ->update('liga');
     }
 
 }

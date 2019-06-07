@@ -52,7 +52,6 @@ class Ligas extends CI_Controller {
 
     }
     
-
     function setLiga(){
 
         $deportes = $this->Deportes->getDeportes();
@@ -91,17 +90,18 @@ class Ligas extends CI_Controller {
 
         else if($this->Usuario->isGestor() || $this->Usuario->isLogged()){
             
+            $arrLigas = [];
             if($this->Usuario->isGestor()){
                 $ligas = $this->Leagues->getLigasGestor();
-
+                foreach($ligas as $liga){
+                    foreach($liga as $lig){
+                        $arrLigas[] = $lig;
+                    }
+                }
                 if($ligas != null){
                 $this->load->view('template', 
-                    ['body'=>$this->load->view('ligasByLogged',['ligas' => $ligas], true)]);
+                    ['body'=>$this->load->view('ligasByLogged',['ligas' => $arrLigas], true)]);
                 }
-                else{
-                    redirect('Ligas/getLigasPublicas');
-                }
-                
             }
             else{
                 $ligas = $this->Leagues->getLigasFromUserId();
@@ -109,7 +109,6 @@ class Ligas extends CI_Controller {
                     $this->load->view('template', 
                         ['body'=>$this->load->view('ligasByLogged',['ligas' => $ligas], true)]);
                 }
-                redirect('Ligas/getLigasPublicas');
             }
         }
         else{
@@ -123,6 +122,64 @@ class Ligas extends CI_Controller {
 
             $this->load->view('template', 
                 ['body'=>$this->load->view('ligaspublicas',['ligas' => $ligas], true)]);
+    }
+
+    function modifyLiga($id){
+
+        $liga= $this->Leagues->getLigaFromId($id);
+        $equipos = $this->Deportes->getEquiposByDeporteId($liga->deportes_iddeporte);
+        $gestores = $this->Usuario->getGestores($id);
+
+        if($this->input->post()){
+
+            $this->form_validation->set_rules('nombre', 'Nombre', 'required');
+            $this->form_validation->set_rules('descripcion', 'Descripcion', 'required');
+            $this->form_validation->set_rules('visible', 'Visible', 'required');
+
+            $this->form_validation->set_rules('nombre', 'Nombre', 'required',
+                    array('required' => 'Campo requerido'));
+            $this->form_validation->set_rules('descripcion', 'Descripcion', 'required',
+                    array('required' => 'Campo requerido'));
+            $this->form_validation->set_rules('visible', 'Visible', 'required',
+                    array('required' => 'Campo requerido'));
+            
+            if ($this->form_validation->run() == FALSE){
+
+                $this->load->view('template', 
+                    ['body'=>$this->load->view('modifyLeague',['liga' => $liga, 'equipos' => $equipos, 'gestores' => $gestores], true)]);
+            }
+            else{
+
+                if($this->input->post('gestores[]') != null){
+                    foreach($this->input->post('gestores[]') as $gestor){
+                        $this->Leagues->setGestor($gestor, $id);
+                    }
+                }
+                if($this->input->post('equipos[]') != null){
+                    foreach($this->input->post('equipos[]') as $equipo){
+                        $this->Leagues->setEquipo($equipo, $id);
+                    }
+                }
+                
+                $this->load->view('template',
+                        ['body'=>$this->load->view('completed',[],true)]);
+            }
+
+        }
+
+        else{
+
+            $this->load->view('template', 
+                ['body'=>$this->load->view('modifyLeague',['liga' => $liga, 'equipos' => $equipos, 'gestores' => $gestores], true)]);
+        }  
+    }
+
+    function deleteLiga($id){
+
+        $this->Leagues->deleteLiga($id);
+
+        $this->load->view('template',
+                    ['body'=>$this->load->view('completed',[],true)]);
     }
 
 

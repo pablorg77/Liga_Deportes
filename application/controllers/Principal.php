@@ -94,6 +94,10 @@ class Principal extends CI_Controller {
 
 		$equipos = $this->Deportes->getEquiposByUsuarioId();
 
+		if($this->Usuario->isAdmin()){
+			$equipos = $this->Deportes->getEquipos();
+		}
+
 		if($equipos!=null){
 
 			$this->load->view('template', 
@@ -109,11 +113,14 @@ class Principal extends CI_Controller {
 	public function notify(){
 
 		if($this->input->post()){
-			$this->Deportes->setNotify($this->input->post('selectDep'));
-			$encuentros = $this->Encuentros->getEncuentrosPorEquipo($this->input->post('selectDep'));
-			$this->Emailme->notify(
-				'prgdwes@gmail.com', $this->session->userdata('user')->usuario, "Horarios de su equipo", $encuentros);
 
+			if(! $this->Usuario->isAdmin()){
+				$this->Deportes->setNotify($this->input->post('selectDep'));
+			}
+				$encuentros = $this->Encuentros->getEncuentrosPorEquipo($this->input->post('selectDep'));
+				$this->Emailme->notify(
+					'prgdwes@gmail.com', $this->session->userdata('user')->usuario, "Horarios de su equipo", $encuentros);
+			
 			$this->load->view('template', 
 				['body'=>$this->load->view('completed',[], true)]);
 

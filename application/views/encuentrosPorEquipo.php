@@ -6,6 +6,7 @@
   <?php endif;?>
 </div>
 <table class="table table-hover table-dark" style="margin: auto; width: 90%; text-align:center; color:black; margin-top: 30px">
+<div class="fl_right" style="margin-right:5%"><?= (isset($liga) && $liga->fechamod!=null) ? "Última modificación:". $liga->fechamod : ""?></div>
   <thead>
     <tr>
       <th scope="col">Fecha</th>

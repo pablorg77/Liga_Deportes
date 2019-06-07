@@ -19,7 +19,7 @@ class Plays extends CI_Controller {
         $equipo = $this->Deportes->getEquipoByid($idEquipo);
 
         $this->load->view('template', 
-			['body'=>$this->load->view('encuentrosPorEquipo',['encuentros'=>$encuentros, 'equipo' => $equipo], true)]);
+			['body'=>$this->load->view('encuentrosPorEquipo',['encuentros'=>$encuentros, 'equipo' => $equipo, 'liga' => null], true)]);
     }
 
     public function getEncuentrosPorLiga($idliga){

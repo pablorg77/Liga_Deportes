@@ -10,7 +10,7 @@ $ci->load->Model('Usuario');?>
       <?php if ($ci->Usuario->isLogged()){ ?>
         <div class="col-md-2 col-xs-0"></div>
         <div class="col-md-4 col-xs-12"><li><a href="<?=site_url('Principal/selectEquipo')?>">Indique el equipo</a></li></div><br/>
-      <?php if(! $ci->Usuario->isGestor()){ ?>
+      <?php if(! $ci->Usuario->isGestor() && ! $ci->Usuario->isAdmin()){ ?>
         <div class="col-md-4 col-xs-12"><li><a href="<?=site_url('Principal/solicitud')?>">Solicitud para gestor.</a></li></div><br/>
       <?php } else{?>
         <div class="col-md-4 col-xs-12"><li><a href="#">Solicitud para gestor.</a></li></div><br/>
