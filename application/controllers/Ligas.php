@@ -166,7 +166,6 @@ class Ligas extends CI_Controller {
             }
 
         }
-
         else{
 
             $this->load->view('template', 
@@ -174,12 +173,62 @@ class Ligas extends CI_Controller {
         }  
     }
 
+    public function setEncuentros($id){
+
+        $equipos = $this->Deportes->getEquiposByLigaId($id);
+        $liga = $this->Leagues->getLigaFromId($id);
+        $mensaje = '';
+
+        if($this->input->post()){
+            
+            $this->form_validation->set_rules('fecha', 'Fecha', 'required|callback_validafecha_check');
+            $this->form_validation->set_rules('lugar', 'Lugar', 'required');
+            
+            $this->form_validation->set_rules('fecha', 'Fecha', 'required|callback_validafecha_check',
+                    array('required' => 'Campo requerido'));
+            $this->form_validation->set_rules('lugar', 'Lugar', 'required',
+                    array('required' => 'Campo requerido'));
+
+            if($this->input->post('local') == $this->input->post('visitante')){
+                $mensaje = "No pueden ser iguales los equipos.";
+            }
+            
+            if ($this->form_validation->run() == FALSE || $mensaje != ''){
+                
+                $this->load->view('template', 
+                    ['body'=>$this->load->view('setEncuentro',['equipos' => $equipos, 'liga' => $liga, 'mensaje' =>$mensaje], true)]);
+            }
+            else{
+
+                $this->Deportes->setEncuentro($this->input->post(), $id, $liga->deportes_iddeporte);
+                
+                $this->load->view('template', 
+                    ['body'=>$this->load->view('completed',[], true)]);
+            }
+        }
+
+        else{
+            $this->load->view('template', 
+                ['body'=>$this->load->view('setEncuentro',['equipos' => $equipos, 'liga' => $liga, 'mensaje' =>$mensaje], true)]);
+        }
+    }
+
+    function validafecha_check($fecha){
+
+        if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$fecha)) {
+            return true;
+        } else {
+            $this->form_validation->set_message('validafecha_check', 'Formato incorrecto');
+            return false;
+        }
+    }
+
     function deleteLiga($id){
 
         $this->Leagues->deleteLiga($id);
 
         $this->load->view('template',
-                    ['body'=>$this->load->view('completed',[],true)]);
+                ['body'=>$this->load->view('completed',[],true)]);
     }
 
 

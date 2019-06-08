@@ -77,7 +77,7 @@
                 <td class="th-sm" colspan="1"><button type="button" class="btn-success"
                 onclick="window.location = '<?= site_url('Ligas/modifyLiga/'.$liga['idliga']);?>'">Modificar</button> | 
                 <button type="button" class="btn-secondary"
-                onclick="window.location = '<?= site_url(''.$liga['idliga']);?>'">Encuentros</button> |
+                onclick="window.location = '<?= site_url('Ligas/setEncuentros/'.$liga['idliga']);?>'">Encuentros</button> |
                 <button type="button" class="openModal btn-danger">Borrar</button></td>
             <?php endif;?>
         </tr>

@@ -43,6 +43,32 @@ class Deportes extends CI_Model{
         return $query->row();
     }
 
+    function getEquiposByLigaId($idliga){
+
+        $arrEquipos = [];
+
+        $query=$this->db
+            ->select('equipos_idequipos')
+            ->from('equipo_en_liga')
+            ->where('liga_idliga', $idliga)
+            ->get();
+        $equiposId = $query->result_array();
+        if($equiposId!=null){
+            foreach($equiposId as $id){
+                $queryEq=$this->db
+                ->select('*')
+                ->from('equipos')
+                ->where('idequipos', $id['equipos_idequipos'])
+                ->get();
+                $arrEquipos[] = $queryEq->result_array();
+            }
+            return $arrEquipos;
+        }
+        else{
+            return null;
+        }
+    }
+
     function getDeportesByCategoria($id){
         $query=$this->db
             ->select('*')
@@ -150,6 +176,13 @@ class Deportes extends CI_Model{
         ->where('equipos_idequipos', $equipoId)
         ->where('usuarios_idusuarios', $this->session->userdata('user')->idusuarios)
         ->update('usuario_en_equipo');
+    }
+
+    function setEncuentro($data, $idliga, $iddeporte){
+
+        $this->db->query('INSERT INTO encuentros (fecha, local, visitante, deportes_iddeporte, liga_idliga, lugar) 
+        	VALUES ("'.$data['fecha'].'","'.$data['local'].'","'.$data["visitante"].'","'.$iddeporte.'","'.$idliga.'", "'.$data["lugar"].'")');
+        
     }
 
 }

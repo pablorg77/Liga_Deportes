@@ -10,6 +10,9 @@ foreach($css_files as $file): ?>
 <body>
 <div>
     <a href='<?= site_url('Principal')?>'>Volver a página principal</a> 
+    <p>Tipo 1: Administrador</p>
+    <p>Tipo 2: Gestor</p>
+    <p>Tipo 3: Usuario</p>
 </div>
 <div style='height:20px;'></div>
 <div style="padding: 10px">
