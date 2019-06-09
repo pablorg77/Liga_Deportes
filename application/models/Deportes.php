@@ -26,6 +26,15 @@ class Deportes extends CI_Model{
         return $query->result_array();
     }
 
+    function getEncuentroById($id){
+        $query=$this->db
+            ->select('*')
+            ->from('encuentros')
+            ->where('idencuentros', $id)
+            ->get();
+        return $query->row();
+    }
+
     function getEquipos(){
         $query=$this->db
         ->select('*')
@@ -168,6 +177,15 @@ class Deportes extends CI_Model{
         else{
             return null;
         }
+    }
+
+    function modifyEncuentro($id, $data){
+        $this->db
+            ->set('resultado', $data['resultado'])
+            ->set('resultadoLocal', $data['resultadoLocal'])
+            ->set('resultadoVisitante', $data['resultadoVisitante'])
+            ->where('idencuentros', $id)
+            ->update('encuentros');
     }
 
     function setNotify($equipoId){

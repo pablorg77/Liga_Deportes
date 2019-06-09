@@ -4,7 +4,7 @@
 <div style="margin-left: 15%; margin-top: 5%; width: 40%; float: left">
     <form id="modifyLiga" method="post" style="display: block;">
     <div class="form-group">
-        <label for="nombre">Nombre: </label>
+        <label for="nombre">* Nombre: </label>
         <input type="text" class="form-control" value="<?= ($this->input->post('nombre')!=null) ? set_value('nombre') : $liga->nombre?>"
             name="nombre" placeholder="<?=$liga->nombre?>">
         <?= form_error('nombre');?>
@@ -13,18 +13,18 @@
         <label for="descripcion">Descripción: </label>
         <input type="text" class="form-control" name="descripcion" placeholder="<?=$liga->descripcion?>"
         value="<?= ($this->input->post('descripcion')!=null) ? set_value('descripcion') : $liga->descripcion?>">
-        <?= form_error('descripcion');?>
     </div>
     <div class="form-group">
-      <label for="equipo" class="col-md-1 col-xs-6">Equipos: </label>
+      <label for="equipo">* Equipos: </label>
       <select multiple="multiple" id="selectEquipos" name="equipos[]">
           <?php foreach($equipos as $equipo):?>
               <option value="<?=$equipo['idequipos']?>"><?=$equipo['nombre']?></option>
           <?php endforeach; ?>
+          <?= form_error('equipos[]');?>
       </select>
     </div><br/>
     <div class="form-group">
-    <label for="gestores" class="col-md-1 col-xs-6">Gestores permitidos: </label>
+    <label for="gestores">Gestores permitidos: </label>
     <select multiple="multiple" id="selectGestores" name="gestores[]">
         <?php foreach($gestores as $gestor):
           foreach($gestor as $gest):?>

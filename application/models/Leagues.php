@@ -43,6 +43,25 @@ class Leagues extends CI_Model{
 
     }
 
+    function modifyLeague($id, $data){
+        if(! isset($data['visible'])){
+            $this->db
+                ->set('nombre', $data['nombre'])
+                ->set('descripcion', $data['descripcion'])
+                ->where('idliga', $id)
+                ->update('liga');
+        }
+        else{
+            $this->db
+                ->set('nombre', $data['nombre'])
+                ->set('descripcion', $data['descripcion'])
+                ->set('visible', $data['visible'])
+                ->where('idliga', $id)
+                ->update('liga');
+        }
+        
+    }
+
     function getLigasAdmin($idDeporte){
 
         $query=$this->db

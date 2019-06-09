@@ -133,14 +133,7 @@ class Ligas extends CI_Controller {
         if($this->input->post()){
 
             $this->form_validation->set_rules('nombre', 'Nombre', 'required');
-            $this->form_validation->set_rules('descripcion', 'Descripcion', 'required');
-            $this->form_validation->set_rules('visible', 'Visible', 'required');
-
             $this->form_validation->set_rules('nombre', 'Nombre', 'required',
-                    array('required' => 'Campo requerido'));
-            $this->form_validation->set_rules('descripcion', 'Descripcion', 'required',
-                    array('required' => 'Campo requerido'));
-            $this->form_validation->set_rules('visible', 'Visible', 'required',
                     array('required' => 'Campo requerido'));
             
             if ($this->form_validation->run() == FALSE){
@@ -160,6 +153,7 @@ class Ligas extends CI_Controller {
                         $this->Leagues->setEquipo($equipo, $id);
                     }
                 }
+                $this->Leagues->modifyLeague($id, $this->input->post());
                 
                 $this->load->view('template',
                         ['body'=>$this->load->view('completed',[],true)]);

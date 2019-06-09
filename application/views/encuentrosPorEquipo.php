@@ -15,6 +15,9 @@
       <th scope="col">Resultados</th>
       <th scope="col">Ganador</th>
       <th scope="col">Lugar</th>
+      <?php if(isset($liga) && ($this->Leagues->isGestorAllowed($liga->idliga) || $this->Usuario->isAdmin())): ?>
+      <th scope="col">Acción</th>
+      <?php endif;?>
     </tr>
   </thead>
   <tbody>
@@ -30,6 +33,10 @@
         <?php }?>
             <td><?= $encuentro['resultado']?></td>
             <td><?= $encuentro['lugar']?></td>
+            <?php if(isset($liga) && ($this->Leagues->isGestorAllowed($liga->idliga) || $this->Usuario->isAdmin())): ?>
+              <td><button type="button" class="" 
+              onclick="window.location ='<?= site_url('Plays/modifyEncuentro/'.$encuentro['idencuentros']);?>'"> Modificar </button> </td>
+            <?php endif;?>
             </tr>
     <?php endforeach;?>
   </tbody>
