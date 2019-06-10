@@ -109,6 +109,9 @@ class Ligas extends CI_Controller {
                     $this->load->view('template', 
                         ['body'=>$this->load->view('ligasByLogged',['ligas' => $ligas], true)]);
                 }
+                else{
+                    redirect('Ligas/getLigasPublicas');
+                }
             }
         }
         else{

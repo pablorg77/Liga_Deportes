@@ -77,7 +77,9 @@
           <ul>
             <li><a href="<?= site_url('Sports'); ?>">Deportes</a></li>
             <li><a href="<?= site_url('Ligas'); ?>">Ligas</a></li>
-            <?php if($this->Usuario->isAdmin()):?>
+            <?php if($this->Usuario->isAdmin() || $this->Usuario->isGestor()):?>
+              <li><a href="<?=site_url('Sports/creaEquipo')?>">Crear equipo </a></li>
+            <?php endif; if($this->Usuario->isAdmin()):?>
               <li><a href="<?= site_url('Principal/controlUsuarios')?>">Gestionar usuarios</a></li><br/>
             <?php endif;?>
           </ul>

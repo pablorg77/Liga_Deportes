@@ -203,4 +203,10 @@ class Deportes extends CI_Model{
         
     }
 
+    function setEquipo($data){
+        $this->db->query('INSERT INTO equipos (nombre, descripcion, capitan, deportes_iddeporte, borrado, origen) 
+        VALUES ("'.$data['nombre'].'","'.$data['descripcion'].'","'.$data['capitan'].'","'.$data['deportes_iddeporte'].
+        '","N", "'.$data['origen'].'")');
+    }
+
 }
