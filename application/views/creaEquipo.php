@@ -1,3 +1,5 @@
+<link href="<?=base_url();?>assets/css/multi-select.css" media="screen" rel="stylesheet" type="text/css">
+<script src="<?=base_url();?>assets/js/jquery.multi-select.js" type="text/javascript"></script>
 <?= form_open('Sports/creaEquipo'); ?>
 <div style="margin-left: 15%; margin-top: 5%; width: 40%; float: left">
     <form method="post" style="display: block;">
@@ -26,6 +28,19 @@
         <label for="capitan">Capitán : </label>
         <input type="text" class="form-control" name="capitan" value="<?= set_value('capitan')?>">
     </div>
+    <div class="form-group">
+        <label for="usuarios">Usuarios del equipo: </label>
+        <select multiple="multiple" id="usuarios" name="usuarios[]">
+        <?php foreach($usuarios as $usuario):?>
+            <option value="<?=$usuario['idusuarios']?>"><?=$usuario['nombre']?></option>
+        <?php endforeach;?>
+    </select>
+    </div>
         <button type="submit" class="btn btn-success">Aceptar</button>
     </form>
 </div>
+
+
+<script>
+$('#usuarios').multiSelect();
+</script>

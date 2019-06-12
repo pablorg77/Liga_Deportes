@@ -24,7 +24,8 @@ class Sports extends CI_Controller {
 
 	public function creaEquipo(){
 
-		$deportes = $this->Deportes->getDeportes();
+        $deportes = $this->Deportes->getDeportes();
+        $usuarios = $this->Usuario->getAllusuarios();
 
 		if($this->input->post()){
 
@@ -40,11 +41,17 @@ class Sports extends CI_Controller {
             if ($this->form_validation->run() == FALSE){
                 
                 $this->load->view('template', 
-			        ['body'=>$this->load->view('creaEquipo',['deportes'=>$deportes], true)]);
+			        ['body'=>$this->load->view('creaEquipo',['deportes'=>$deportes, 'usuarios' => $usuarios], true)]);
             }
             else{
 
                 $this->Deportes->setEquipo($this->input->post());
+
+                if($this->input->post('usuarios[]') != null){
+                    foreach($this->input->post('usuarios[]') as $usuario){
+                        $this->Deportes->setUsuarioEnEquipo($usuario);
+                    }
+                }
                 
                 $this->load->view('template', 
                     ['body'=>$this->load->view('completed',[], true)]);
@@ -54,7 +61,7 @@ class Sports extends CI_Controller {
         else{
 
             $this->load->view('template', 
-			        ['body'=>$this->load->view('creaEquipo',['deportes'=>$deportes], true)]);
+			        ['body'=>$this->load->view('creaEquipo',['deportes'=>$deportes, 'usuarios' => $usuarios], true)]);
         }
     }
 	

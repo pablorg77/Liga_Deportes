@@ -207,6 +207,23 @@ class Deportes extends CI_Model{
         $this->db->query('INSERT INTO equipos (nombre, descripcion, capitan, deportes_iddeporte, borrado, origen) 
         VALUES ("'.$data['nombre'].'","'.$data['descripcion'].'","'.$data['capitan'].'","'.$data['deportes_iddeporte'].
         '","N", "'.$data['origen'].'")');
+
     }
+
+    function setUsuarioEnEquipo($usuario){
+
+            $getQuery=$this->db
+            ->select('*')
+            ->from('equipos')
+            ->order_by('idequipos','DESC')
+            ->limit('1')
+            ->get();
+        $equipo = $getQuery->row();
+        
+        $this->db->query('INSERT INTO usuario_en_equipo (usuarios_idusuarios, equipos_idequipos) VALUES
+        ('.$usuario.', '.$equipo->idequipos.')');
+
+    }
+    
 
 }

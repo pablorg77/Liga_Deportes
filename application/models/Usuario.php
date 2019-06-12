@@ -68,7 +68,7 @@ class Usuario extends CI_Model{
     function getAllusuarios(){
 
         $query=$this->db
-            ->select('usuario')
+            ->select('*')
             ->from('usuarios')
             ->get();
         return $query->result_array();

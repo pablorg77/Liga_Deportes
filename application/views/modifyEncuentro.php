@@ -18,10 +18,12 @@
     <div class="form-group">
         <label for="resultado">Ganador: </label>
         <?php if($encuentro->fecha != date('Y-m-d')):?>
-            <input type="text" class="form-control" disabled>
+            <input type="text" class="form-control" disabled
+            value="<?= ($this->input->post('resultado')!=null) ? set_value('resultado') : $encuentro->resultado?>">
             <p><small>Solo podrá editarse el día del encuentro.</small></p>
         <?php endif; if($encuentro->fecha == date('Y-m-d')):?>
-            <input type="text" class="form-control" name="resultado" placeholder="<?=$encuentro->local?> / <?=$encuentro->visitante?>" value="<?=set_value('resultado')?>">
+            <input type="text" class="form-control" name="resultado" placeholder="<?=$encuentro->local?> / <?=$encuentro->visitante?>" 
+            value="<?= ($this->input->post('resultado')!=null) ? set_value('resultado') : $encuentro->resultado?>">
         <?php endif;?>
         <?= form_error('resultado');?>
         <?=$mensaje?>
@@ -29,18 +31,22 @@
     <div class="form-group">
         <label for="resultadoL"> Resultado de local: </label>
         <?php if($encuentro->fecha != date('Y-m-d')):?>
-            <input type="text" class="form-control" disabled>
+            <input type="text" class="form-control" disabled
+            value="<?= ($this->input->post('resultadoLocal')!=null) ? set_value('resultadoLocal') : $encuentro->resultadoLocal?>">
             <p><small>Solo podrá editarse el día del encuentro.</small></p>
         <?php endif; if($encuentro->fecha == date('Y-m-d')):?>
-            <input type="text" class="form-control" name="resultadoLocal" placeholder="Puntuación numérica" value="<?=set_value('resultadoLocal')?>">
+            <input type="text" class="form-control" name="resultadoLocal" placeholder="Puntuación numérica" 
+            value="<?= ($this->input->post('resultadoLocal')!=null) ? set_value('resultadoLocal') : $encuentro->resultadoLocal?>">
         <?php endif;?>
         <?= form_error('resultadoLocal');?><br/>
         <label for="resultadoV"> Resultado de visitante: </label>
         <?php if($encuentro->fecha != date('Y-m-d')):?>
-            <input type="text" class="form-control" disabled>
+            <input type="text" class="form-control" disabled
+            value="<?= ($this->input->post('resultadoVisitante')!=null) ? set_value('resultadoVisitante') : $encuentro->resultadoVisitante?>">
             <p><small>Solo podrá editarse el día del encuentro.</small></p>
         <?php endif; if($encuentro->fecha == date('Y-m-d')):?>
-            <input type="text" class="form-control" name="resultadoVisitante" placeholder="Puntuación numérica" value="<?=set_value('resultadoVisitante')?>">
+            <input type="text" class="form-control" name="resultadoVisitante" placeholder="Puntuación numérica" 
+            value="<?= ($this->input->post('resultadoVisitante')!=null) ? set_value('resultadoVisitante') : $encuentro->resultadoVisitante?>">
         <?php endif;?>
         <?= form_error('resultadoVisitante');?>
     </div>
