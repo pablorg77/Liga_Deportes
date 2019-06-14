@@ -56,12 +56,13 @@ class Ligas extends CI_Controller {
 
         $deportes = $this->Deportes->getDeportes();
 
-        $this->form_validation->set_rules('deporte', 'Deporte', 'required');
-        $this->form_validation->set_rules('nombre', 'Nombre', 'required');
+        $this->form_validation->set_rules('nombre', 'Nombre', 'required|is_unique[liga.nombre]');
+        $this->form_validation->set_rules('visible', 'Visible', 'required');
 
-        $this->form_validation->set_rules('deporte', 'Deporte', 'required',
-                array('required' => 'Campo requerido'));
-        $this->form_validation->set_rules('nombre', 'Nombre', 'required',
+        $this->form_validation->set_rules('nombre', 'Nombre', 'required|is_unique[liga.nombre]',
+                array('required' => 'Campo requerido', 
+                    'is_unique' => 'Ya existe con ese nombre'));
+        $this->form_validation->set_rules('visible', 'Visible', 'required',
                 array('required' => 'Campo requerido'));
 
         if ($this->form_validation->run() == FALSE){
@@ -69,6 +70,7 @@ class Ligas extends CI_Controller {
                 ['body'=>$this->load->view('liga',['deportes' => $deportes], true)]);
         }
         else{
+
             $this->Leagues->setLiga($this->input->post());
             
             $this->load->view('template',
@@ -79,13 +81,14 @@ class Ligas extends CI_Controller {
     function getLigas(){
         
         $ligas = [];
+        $deportes = $this->Deportes->getDeportes();
 
         if($this->Usuario->isAdmin()){
 
             $ligas = $this->Leagues->getAllLigas();
 
             $this->load->view('template', 
-                    ['body'=>$this->load->view('ligasByLogged',['ligas' => $ligas], true)]);
+                    ['body'=>$this->load->view('ligasByLogged',['ligas' => $ligas, 'deportes' =>$deportes], true)]);
         }
 
         else if($this->Usuario->isGestor() || $this->Usuario->isLogged()){
@@ -93,21 +96,42 @@ class Ligas extends CI_Controller {
             $arrLigas = [];
             if($this->Usuario->isGestor()){
                 $ligas = $this->Leagues->getLigasGestor();
+                if($ligas != null){
                 foreach($ligas as $liga){
                     foreach($liga as $lig){
                         $arrLigas[] = $lig;
                     }
                 }
-                if($ligas != null){
+                
                 $this->load->view('template', 
-                    ['body'=>$this->load->view('ligasByLogged',['ligas' => $arrLigas], true)]);
+                    ['body'=>$this->load->view('ligasByLogged',['ligas' => $arrLigas, 'deportes' =>$deportes], true)]);
+                }
+                else{
+                    $ligas = $this->Leagues->getLigasFromUserId();
+                if($ligas != null){
+                    foreach($ligas as $liga){
+                        foreach($liga as $lig){
+                            $arrLigas[] = $lig;
+                        }
+                    }
+                    $this->load->view('template', 
+                        ['body'=>$this->load->view('ligasByLogged',['ligas' => $arrLigas, 'deportes' =>$deportes], true)]);
+                }
+                else{
+                    redirect('Ligas/getLigasPublicas');
+                }
                 }
             }
             else{
                 $ligas = $this->Leagues->getLigasFromUserId();
                 if($ligas != null){
+                    foreach($ligas as $liga){
+                        foreach($liga as $lig){
+                            $arrLigas[] = $lig;
+                        }
+                    }
                     $this->load->view('template', 
-                        ['body'=>$this->load->view('ligasByLogged',['ligas' => $ligas], true)]);
+                        ['body'=>$this->load->view('ligasByLogged',['ligas' => $arrLigas, 'deportes' =>$deportes], true)]);
                 }
                 else{
                     redirect('Ligas/getLigasPublicas');
@@ -121,10 +145,11 @@ class Ligas extends CI_Controller {
 
     function getLigasPublicas(){
 
+        $deportes = $this->Deportes->getDeportes();
         $ligas = $this->Leagues->getLigasPublicas();
 
             $this->load->view('template', 
-                ['body'=>$this->load->view('ligaspublicas',['ligas' => $ligas], true)]);
+                ['body'=>$this->load->view('ligaspublicas',['ligas' => $ligas, 'deportes'=>$deportes], true)]);
     }
 
     function modifyLiga($id){
@@ -135,7 +160,7 @@ class Ligas extends CI_Controller {
 
         if($this->input->post()){
 
-            $this->form_validation->set_rules('nombre', 'Nombre', 'required');
+            $this->form_validation->set_rules('nombre', 'Nombre', 'required|is_unique[liga.nombre]');
             $this->form_validation->set_rules('nombre', 'Nombre', 'required',
                     array('required' => 'Campo requerido'));
             
@@ -179,11 +204,8 @@ class Ligas extends CI_Controller {
         if($this->input->post()){
             
             $this->form_validation->set_rules('fecha', 'Fecha', 'required|callback_validafecha_check');
-            $this->form_validation->set_rules('lugar', 'Lugar', 'required');
             
             $this->form_validation->set_rules('fecha', 'Fecha', 'required|callback_validafecha_check',
-                    array('required' => 'Campo requerido'));
-            $this->form_validation->set_rules('lugar', 'Lugar', 'required',
                     array('required' => 'Campo requerido'));
 
             if($this->input->post('local') == $this->input->post('visitante')){
@@ -197,7 +219,16 @@ class Ligas extends CI_Controller {
             }
             else{
 
-                $this->Deportes->setEncuentro($this->input->post(), $id, $liga->deportes_iddeporte);
+                $data = $this->input->post();
+
+                
+
+                if($data['lugar']==null){
+                    $equipoLocal = $this->Deportes->getEquipoByName($data['local']);
+                    $data['lugar'] = $equipoLocal->origen;
+                }
+
+                $this->Deportes->setEncuentro($data, $id, $liga->deportes_iddeporte);
                 
                 $this->load->view('template', 
                     ['body'=>$this->load->view('completed',[], true)]);

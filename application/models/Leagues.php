@@ -7,6 +7,7 @@ class Leagues extends CI_Model{
             ->select('*')
             ->from('liga')
             ->where('borrado', 'N')
+            ->order_by('deportes_iddeporte')
             ->get();
         return $query->result_array();
     }
@@ -69,6 +70,7 @@ class Leagues extends CI_Model{
             ->from('liga')
             ->where('deportes_iddeporte', $idDeporte)
             ->where('borrado', 'N')
+            ->order_by('deportes_iddeporte')
             ->get();
         return $query->result_array();
     }
@@ -105,6 +107,7 @@ class Leagues extends CI_Model{
                 ->from('liga')
                 ->where('idliga', $idLiga)
                 ->where('borrado', 'N')
+                ->order_by('deportes_iddeporte')
                 ->get();
                 $arrLigas[] = $getQueryLig->result_array();                
             }
@@ -133,6 +136,7 @@ class Leagues extends CI_Model{
                 ->from('liga')
                 ->where('idliga', $liga['liga_idliga'])
                 ->where('borrado', 'N')
+                ->order_by('deportes_iddeporte')
                 ->get();
                 $arrLigas[] = $getQueryLig->result_array();
             }
@@ -151,6 +155,7 @@ class Leagues extends CI_Model{
             ->from('liga')
             ->where('visible', 1)
             ->where('borrado', 'N')
+            ->order_by('deportes_iddeporte')
             ->get();
         return $query->result_array();
 

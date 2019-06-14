@@ -66,7 +66,7 @@ class Plays extends CI_Controller {
 
                 if($data['resultadoLocal'] == $data['resultadoVisitante']){
                     $data['resultado'] = "Empate";
-                }    
+                }
 
                 $this->Deportes->modifyEncuentro($idencuentro, $data);
                 

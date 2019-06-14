@@ -34,7 +34,7 @@ class Sports extends CI_Controller {
             
             $this->form_validation->set_rules('nombre', 'Nombre', 'required|is_unique[equipos.nombre]',
 					array('required' => 'Campo requerido', 
-						'is_unique[equipos.nombre]' => 'Nombre existente'));
+						'is_unique' => 'Nombre existente'));
             $this->form_validation->set_rules('origen', 'Origen', 'required',
                     array('required' => 'Campo requerido'));
             

@@ -52,6 +52,15 @@ class Deportes extends CI_Model{
         return $query->row();
     }
 
+    function getEquipoByName($name){
+        $query=$this->db
+            ->select('*')
+            ->from('equipos')
+            ->where('nombre', $name)
+            ->get();
+        return $query->row();
+    }
+
     function getEquiposByLigaId($idliga){
 
         $arrEquipos = [];
@@ -130,7 +139,7 @@ class Deportes extends CI_Model{
 
         if($this->Usuario->isLogged()){
             $query=$this->db
-            ->select('equipos_idequipos')
+            ->select('*')
             ->from('usuario_en_equipo')
             ->where('usuarios_idusuarios', $this->session->userdata('user')->idusuarios)
             ->where('notificacion', 0)
@@ -144,7 +153,7 @@ class Deportes extends CI_Model{
                     ->from('equipos')
                     ->where('idequipos', $id['equipos_idequipos'])
                     ->get();
-                    $arrEquipos = $queryEq->result_array();
+                    $arrEquipos[] = $queryEq->result_array();
                 }
                 return $arrEquipos;
             }

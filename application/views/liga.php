@@ -2,14 +2,13 @@
 <div class="form-horizontal" style="margin-top:5%; margin-left:15%">
 <form method="post">
   <div class="form-group">
-        <label for="deporte" class="col-md-1 control-label">*Deporte:</label>
+        <label for="deporte" class="col-md-2 control-label">* Deporte:</label>
         <div class="col-md-5">
             <select id="deporte" name="deporte" class="form-control">
                 <?php foreach($deportes as $deporte): ?>
                     <option value="<?=$deporte['iddeporte']?>"><?=$deporte['nombre']?></option>
                 <?php endforeach;?>
             </select>
-            <?= form_error('deporte');?>
         </div>
   </div>
   <div class="form-group">
@@ -17,8 +16,8 @@
         <div class="col-md-5">
             <input type="text" class="form-control" id="nombre" name="nombre"
                 value="<?=set_value('nombre')?>" placeholder="Nombre de su liga">
+              <?= form_error('nombre');?>
         </div>
-        <?= form_error('nombre');?>
   </div>
   <div class="form-group">
         <label for="nombre" class="col-md-2 control-label">Descripcion: </label>
@@ -42,6 +41,7 @@
         </label>
       </div>
     </div>
+    <div style="margin-top:2%"><?= form_error('visible');?></div>
   </div>
   <div class="form-group" style="margin-top:2%">
     <div class="col-md-2 col-xs-10">

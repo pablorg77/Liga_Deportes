@@ -33,8 +33,8 @@ class Emailme extends CI_Model{
 
         $response .= "<h2><strong> Horarios de los encuentros de su equipo: </strong></h2>";
         $response .=
-        "<table border='1'>
-            <thead>
+        "<table style='border:1px solid black; width:100%; text-align:center;'>
+            <thead style='padding: 0.3em'>
                 <tr>
                     <th>Fecha</th>
                     <th>Local</th>
@@ -44,7 +44,7 @@ class Emailme extends CI_Model{
                     <th>Lugar</th>
                 </tr>
             </thead>
-        <tbody>";
+        <tbody style='padding: 0.3em'>";
         foreach($body as $encuentro){
             $response .= "<tr>
             <td>". $encuentro['fecha']. "</td>
